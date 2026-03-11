@@ -6,6 +6,8 @@
 ### AnythingLLM
 - desktop app: https://anythingllm.com/
 - https://github.com/Mintplex-Labs/anything-llm
+- setup by pointing at LMStudio
+  - can select all models available from LMStudio and load directly in interface (using the ?brain? icon)
 ### LMStudio
 - run remote, link through tailscale as necessary (they now have a discoverable secure login w/ device discovery, which I have not tried)
 #### Unload models remotely:
