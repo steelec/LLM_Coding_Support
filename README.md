@@ -1,6 +1,7 @@
 # Setup
 - LMStudio (mac version)
 - tailcale (secure connections between devices)
+- opencode (command-line based coding harness)
 
 ## Tools
 ### Harness(es)
