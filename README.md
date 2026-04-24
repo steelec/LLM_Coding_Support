@@ -3,6 +3,40 @@
 - tailcale (secure connections between devices)
 
 ## Tools
+### Harness(es)
+#### Opencode
+- Installation
+  - `curl -fsSL https://opencode.ai/install | bash`
+  - To provide lookup of models direct from local/networked lmstudio instance: `npm install opencode-lmstudio`
+    - if you do not have `npm`, it must be installed (see below)
+- config files live in `~/.opencode/`
+- update to point at your local LLM server, you can add models specifically or a provider
+  - you can aslo add specific models to this directly, but having `opencode-lmstudio` installed allows generation the list of available based on the baseURL (use `/models` command in opencode)
+  - `vim ~/.opencode/opencode.json`
+```
+{
+  "$schema": "https://opencode.ai/config.json",
+  "plugin": [
+    "opencode-lmstudio@latest"
+  ],
+  "provider": {
+    "lmstudio": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "LM Studio (local)",
+      "options": {
+        "baseURL": "http://<IP>:<port>/v1"
+      }
+    }
+  }
+}
+```
+##### Install npm to get access to the whole world of skills
+- Skills give superpowers to your harness
+- many available at https://skills.sh/
+  - `sudo apt install npm`
+- Install specific skill to a specific agent harness
+  - `npx skills add https://github.com/forrestchang/andrej-karpathy-skills -a opencode`
+
 ### AnythingLLM
 - desktop app: https://anythingllm.com/
 - https://github.com/Mintplex-Labs/anything-llm
