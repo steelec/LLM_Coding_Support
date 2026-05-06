@@ -8,8 +8,9 @@
 #### Opencode
 - Installation
   - `curl -fsSL https://opencode.ai/install | bash`
-  - To provide lookup of models direct from local/networked lmstudio instance: `npm install opencode-lmstudio`
-    - if you do not have `npm`, it must be installed (see below)
+  - To provide lookup of models direct from local/networked lmstudio instance:
+    - `npm install opencode-lmstudio`
+  - if you do not have `npm`, it must be installed (see below)
 - config files live in `~/.opencode/`
 - update to point at your local LLM server, you can add models specifically or a provider
   - you can aslo add specific models to this directly, but having `opencode-lmstudio` installed allows generation the list of available based on the baseURL (use `/models` command in opencode)
