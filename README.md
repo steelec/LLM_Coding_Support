@@ -1,4 +1,18 @@
-# Setup
+# Enhanced local model setup for llama w/ guardrails
+To use forge-guardrails to improve local model peformance: https://github.com/antoinezambelli/forge
+## Install forge-guardrails
+python package, requires version 3.12
+- install uv: `curl -LsSf https://astral.sh/uv/install.sh | sh`
+- create venv in `~/Documents/code`: `uv venv env_forge --python 3.12`
+- activate it: `source env_forge/bin/activate`
+- install forge: `uv pip install forge-guardrails`
+## Install llama
+- create directory `~/Documents/code/tools`
+- download (e.g.): `curl -O https://github.com/ggml-org/llama.cpp/releases/download/b9437/llama-b9437-bin-macos-arm64.tar.gz -L`
+- untar: `tar -xvf llama*`
+- link to local bin (e.g.): `ln -s /Users/csteele/Documents/code/tools/llama-b9437/llama* ~/.local/bin/.` 
+
+# General Setup with LMStudio
 - LMStudio (mac version)
 - tailcale (secure connections between devices)
 - opencode (command-line based coding harness)
