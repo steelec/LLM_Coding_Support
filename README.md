@@ -1,5 +1,8 @@
 # Enhanced local model setup for llama w/ guardrails
 To use forge-guardrails to improve local model peformance: https://github.com/antoinezambelli/forge
+- can be setup in proxy mode to just point to current server (e.g., LMStudio)
+- or with the full llama.cpp backend setup (there are additional benefits to this)
+
 ## Install forge-guardrails
 python package, requires version 3.12: https://github.com/antoinezambelli/forge
 - install uv: `curl -LsSf https://astral.sh/uv/install.sh | sh`
