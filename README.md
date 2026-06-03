@@ -18,7 +18,7 @@ https://github.com/ggml-org/llama.cpp/releases
 - link to local bin (e.g.): `ln -s /Users/csteele/Documents/code/tools/llama-b9437/llama* ~/.local/bin/.` 
 
 ## Connect LMStudio<-forge<-opencode
-1. run forge wrapper (simple default mode): `python -m forge.proxy   --backend-url http://127.0.0.1:8080   --backend lmstudio --port 8081 --budget-tokens 262144`
+1. run forge wrapper (simple default mode): `python -m forge.proxy   --backend-url http://127.0.0.1:8080   --backend vllm --port 8081 --budget-tokens 262144`
 2. test from local machine (if ports are visible and bound): `curl http://localhost:8081/v1/models`
 3. test from the remote machine: `curl http://<remote_ip>:8081/v1/models`
   - should have a response like: `{"object": "list", "data": [{"id": "forge", "object": "model"}]}`
