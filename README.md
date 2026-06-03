@@ -9,12 +9,36 @@ python package, requires version 3.12: https://github.com/antoinezambelli/forge
 - create venv in `~/Documents/code`: `uv venv env_forge --python 3.12`
 - activate it: `source env_forge/bin/activate`
 - install forge: `uv pip install forge-guardrails`
+
 ## Install llama
 https://github.com/ggml-org/llama.cpp/releases
 - create directory `~/Documents/code/tools`
 - download (e.g.): `curl -O https://github.com/ggml-org/llama.cpp/releases/download/b9437/llama-b9437-bin-macos-arm64.tar.gz -L`
 - untar: `tar -xvf llama*`
 - link to local bin (e.g.): `ln -s /Users/csteele/Documents/code/tools/llama-b9437/llama* ~/.local/bin/.` 
+
+## Connect LMStudio<-forge<-opencode
+1. run forge wrapper (simple default mode): `python -m forge.proxy   --backend-url http://127.0.0.1:8080   --port 8081 --budget-tokens 262144`
+2. test from local machine (if ports are visible and bound): `curl http://localhost:8081/v1/models`
+3. test from the remote machine: `curl http://<remote_ip>:8081/v1/models`
+  - should have a response like: `{"object": "list", "data": [{"id": "forge", "object": "model"}]}`
+4. Update `.opencode/opencode.json` to point to newly wrapped interface:
+- this does not currently work as advertised
+```
+{
+  "$schema": "https://opencode.ai/config.json",
+  "model": "unsloth/qwen3.6-35b-a3b@q8_k_xl",
+  "provider": {
+    "lmstudio": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "LM Studio (local)",
+      "options": {
+        "baseURL": "http://<remote_ip>:8081/v1"
+      }
+      }
+      }
+    }
+```
 
 # General Setup with LMStudio
 - LMStudio (mac version)
