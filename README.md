@@ -24,6 +24,7 @@ https://github.com/ggml-org/llama.cpp/releases
   - should have a response like: `{"object": "list", "data": [{"id": "forge", "object": "model"}]}`
 4. Update `.opencode/opencode.json` to point to newly wrapped interface:
 - this does not currently work as advertised
+- model name is not correctly passed through (Jun 2, 2026) but the model can be accessed at least partially (fails at some point)
 ```
 {
   "$schema": "https://opencode.ai/config.json",
