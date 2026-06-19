@@ -18,7 +18,7 @@ https://github.com/ggml-org/llama.cpp/releases
 - link to local bin (e.g.): `ln -s /Users/csteele/Documents/code/tools/llama-b9437/llama* ~/.local/bin/.` 
 
 ## Run llama-server
-- alternative, can run llama-cli for testing purposes
+- alternative, can run `llama-cli` for testing purposes
 - here we run an MTP-style for agent usage, with full offloading to GPU (QwenOpus 3.6 MTP from JackRong)
 ```
 llama-server \                                                                                              
