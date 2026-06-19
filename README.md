@@ -21,8 +21,9 @@ https://github.com/ggml-org/llama.cpp/releases
 - alternative, can run llama-cli for testing purposes
 - here we run an MTP-style for agent usage, with full offloading to GPU (QwenOpus 3.6 MTP from JackRong)
 ```
-llama-server \
-  --model /path/to/model.gguf \
+llama-server \                                                                                              
+  --model $MODEL \
+  --flash-attn on \
   -c 200000 \
   -ngl 999 \
   --temp 0.9 \
@@ -34,9 +35,8 @@ llama-server \
   --chat-template-kwargs '{"preserve_thinking": true}' \
   --spec-type draft-mtp \
   --spec-draft-n-max 3 \
-  --jinja
-  --cache-type-k q8_0 \
-  --cache-type-v q8_0
+  --jinja --cache-type-k q8_0 --cache-type-v q8_0 --host 0.0.0.0 --port 8080 \
+  --metrics
 ```
 
 ## Connect LMStudio<-forge<-opencode
