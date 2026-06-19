@@ -35,6 +35,8 @@ llama-server \
   --spec-type draft-mtp \
   --spec-draft-n-max 3 \
   --jinja
+  --cache-type-k q8_0 \
+  --cache-type-v q8_0
 ```
 
 ## Connect LMStudio<-forge<-opencode
