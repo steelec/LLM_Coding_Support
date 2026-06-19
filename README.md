@@ -22,7 +22,7 @@ https://github.com/ggml-org/llama.cpp/releases
 - here we run an MTP-style for agent usage, with full offloading to GPU (QwenOpus 3.6 MTP from JackRong)
 ```
 llama-server \                                                                                              
-  --model $MODEL \
+  --model $MODEL_DIR/Jackrong/Qwopus3.6-27B-Coder-MTP-GGUF/Qwopus3.6-27B-Coder-MTP-Q8_0.gguf \
   --flash-attn on \
   -c 200000 \
   -ngl 999 \
