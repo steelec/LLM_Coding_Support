@@ -34,7 +34,7 @@ llama-server \
   --repeat-penalty 1.0 \
   --chat-template-kwargs '{"preserve_thinking": true}' \
   --spec-type draft-mtp \
-  --spec-draft-n-max 2 \
+  --spec-draft-n-max 3 \
   --jinja --cache-type-k q8_0 --cache-type-v q8_0 --host 0.0.0.0 --port 8080 \
   --metrics
 ```
