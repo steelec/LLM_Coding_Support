@@ -3,13 +3,6 @@ To use forge-guardrails to improve local model peformance: https://github.com/an
 - can be setup in proxy mode to just point to current server (e.g., LMStudio)
 - or with the full llama.cpp backend setup (there are additional benefits to this)
 
-## Install forge-guardrails
-python package, requires version 3.12: https://github.com/antoinezambelli/forge
-- install uv: `curl -LsSf https://astral.sh/uv/install.sh | sh`
-- create venv in `~/Documents/code`: `uv venv env_forge --python 3.12`
-- activate it: `source env_forge/bin/activate`
-- install forge: `uv pip install forge-guardrails`
-
 ## Install llama
 https://github.com/ggml-org/llama.cpp/releases
 - create directory `~/Documents/code/tools`
@@ -22,7 +15,7 @@ https://github.com/ggml-org/llama.cpp/releases
 - here we run an MTP-style for agent usage, with full offloading to GPU (QwenOpus 3.6 MTP from JackRong)
 ```
 llama-server \                                                                                              
-  --model $MODEL_DIR/Jackrong/Qwopus3.6-27B-Coder-MTP-GGUF/Qwopus3.6-27B-Coder-MTP-Q8_0.gguf \
+  --model /Users/${USER}/.lmstudio/models/Jackrong/Qwopus3.6-27B-Coder-MTP-GGUF/Qwopus3.6-27B-Coder-MTP-Q8_0.gguf \
   --flash-attn on \
   -c 200000 \
   -ngl 999 \
@@ -38,6 +31,13 @@ llama-server \
   --jinja --cache-type-k q8_0 --cache-type-v q8_0 --host 0.0.0.0 --port 8080 \
   --metrics
 ```
+
+## Install forge-guardrails
+python package, requires version 3.12: https://github.com/antoinezambelli/forge
+- install uv: `curl -LsSf https://astral.sh/uv/install.sh | sh`
+- create venv in `~/Documents/code`: `uv venv env_forge --python 3.12`
+- activate it: `source env_forge/bin/activate`
+- install forge: `uv pip install forge-guardrails`
 
 ## Connect LMStudio<-forge<-opencode
 1. run forge wrapper (simple default mode): `python -m forge.proxy   --backend-url http://127.0.0.1:8080  --port 8081 --budget-tokens 262144`
@@ -64,6 +64,8 @@ llama-server \
 ```
 
 # General Setup with LMStudio
+- useful for downloading models and testing parameters
+  - parameter testing is faster with `llama-cli`
 - LMStudio (mac version)
 - tailcale (secure connections between devices)
 - opencode (command-line based coding harness)
