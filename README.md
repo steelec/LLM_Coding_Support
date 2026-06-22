@@ -3,6 +3,18 @@ To use forge-guardrails to improve local model peformance: https://github.com/an
 - can be setup in proxy mode to just point to current server (e.g., LMStudio)
 - or with the full llama.cpp backend setup (there are additional benefits to this)
 
+## MAC-specific setup
+### Programs
+- `tailscale` (add to autostart!)
+- `brew` (if you want to be doing some more custom things!)
+
+### Shared memory settings
+- by default, mac has a hard-coded amount of mem that is available to the GPU
+  - the full memory is therefore **not available** to your model, which will crash performance if you are loading large contexts and/or k/v cache with higher precision
+- set to 75% of available memory as a safe setting (leaving other for system resources)
+  - set to 56GB (for 64 GB mac): `sudo sysctl iogpu.wired_limit_mb=57344`
+  - default is `sysctl iogpu.wired_limit_mb=0`
+
 ## Install llama
 https://github.com/ggml-org/llama.cpp/releases
 - create directory `~/Documents/code/tools`
