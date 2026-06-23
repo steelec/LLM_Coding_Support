@@ -72,7 +72,20 @@ Trying to get the best of all worlds, as dense turboquant gets bogged down w/ la
 - if this does not work look at AtomicChat, this is more up-to-date it seems (but the improvements in tok/s seem not so great)
   - https://huggingface.co/AtomicChat/Qwen3.6-27B-UDT-MTP-GGUF
   - https://github.com/AtomicBot-ai/atomic-llama-cpp-turboquant/tree/feature/turboquant-kv-cache
- ```
+- Setup:
+1. `hf download AtomicChat/Qwen3.6-27B-UDT-MTP-GGUF Qwen3.6-27B-UDT-Q8_K_XL_MTP.gguf --local-dir .`
+2. `cd ~/Documents/code/`
+3. Download, build, and compile the fork (for macOS metal)
+```
+https://github.com/AtomicBot-ai/atomic-llama-cpp-turboquant.git`
+cd atomic-llama-cpp-turboquant
+git checkout feature/turboquant-kv-cache
+cmake -B build -DGGML_METAL=ON -DGGML_METAL_EMBED_LIBRARY=ON -DCMAKE_BUILD_TYPE=Release
+cmake --build build --config Release -j
+```
+4. Can now be run from `~/Documents/code/atomic-llama-cpp-turboquant/build/bin/llama-server`
+
+```
 Where the "Huge" Gains Actually Happen
 The major speedups (+24% to +36%) you see highlighted for this fork occur on the Mixture-of-Experts (MoE) models, specifically the Qwen 3.6 35B-A3B (which only activates 3B parameters per token).
 
@@ -85,20 +98,21 @@ Without UDT's tensor masks, running NextN decoding while simultaneously squeezin
 
 The combination of a UDT file and NextN just allows you to squeeze your context memory down to turbo3 without suffering that speed penalty, keeping you at a net-positive (albeit modest) gain.
 ```
+
     ```
 ```
 /Users/${USER}/Documents/code/llama-cpp-turboquant/build/bin/llama-server \
-  --model /Users/${USER}/.lmstudio/models/Jackrong/Qwopus3.6-27B-Coder-COMPAT-MTP-GGUF/Qwopus3.6-27B-Coder-Compat-MTP-Q8_0.gguf \
-  --model-draft /Users/${USER}/.lmstudio/models/Jackrong/Qwopus3.6-27B-Coder-COMPAT-MTP-GGUF/Qwopus3.6-27B-Coder-Compat-MTP-Q8_0.gguf \
+  --model /Users/${USER}/.lmstudio/models/AtomicChat/Qwen3.6-27B-UDT-MTP-GGUF/Qwen3.6-27B-UDT-Q8_K_XL_MTP.gguf \
+  --model-draft /Users/${USER}/.lmstudio/models/AtomicChat/Qwen3.6-27B-UDT-MTP-GGUF/Qwen3.6-27B-UDT-Q8_K_XL_MTP.gguf \
   -c 131072 \
   -np 1 \
   -b 512 \
   -ub 512 \
   -ngl 999 \
-  --cache-type-k turbo3 \
+  --cache-type-k q8_0 \
   --cache-type-v turbo3 \
-  --spec-type nextn \
-  --draft-max 2 \
+  --spec-type mtp \
+  --spec-draft-n-max 3 \
   -fa on \
   --jinja \
   --chat-template-file /Users/${USER}/Documents/code/chat_template.jinja \
