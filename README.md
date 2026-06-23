@@ -34,7 +34,12 @@ https://github.com/ggml-org/llama.cpp/releases
 ## Run llama-server
 - alternative, can run `llama-cli` for testing purposes
 - can run turboquant compatible versions as well
-- 
+
+## Chat template(s)
+Useful to reduce looping, which you saw a lot of in the Qwen 3.6 variants (not in the original dense model). Can also reduce token usage and improve agentic flow, apparently
+## froggeric
+- https://huggingface.co/froggeric/Qwen-Fixed-Chat-Templates/blob/main/chat_template.jinja
+- `hf download froggeric/Qwen-Fixed-Chat-Templates chat_template.jinja --local-dir ~/Documents/code/.`
 
 ### Qwen 3.7 27B dense
 - reliable, but heavy and slow so we use turboquant
@@ -56,6 +61,27 @@ https://github.com/ggml-org/llama.cpp/releases
   --host 0.0.0.0 \
   --port 8080
 ```
+
+### Qwenopus 3.6 CODER COMPAT MTP (JackRong) with turboquant
+Trying to get the best of all worlds, as dense turboquant gets bogged down w/ large context (2 tok/s)
+```
+/Users/${USER}/Documents/code/llama-cpp-turboquant/build/bin/llama-server \
+  --model /Users/${USER}/.lmstudio/models/Jackrong/Qwopus3.6-27B-Coder-COMPAT-MTP-GGUF/Qwopus3.6-27B-Coder-Compat-MTP-Q8_0.gguf \
+  --model-draft /Users/${USER}/.lmstudio/models/Jackrong/Qwopus3.6-27B-Coder-COMPAT-MTP-GGUF/Qwopus3.6-27B-Coder-Compat-MTP-Q8_0.gguf \
+  -c 131072 \
+  -np 1 \
+  -b 512 \
+  -ub 512 \
+  -ngl 999 \
+  --cache-type-k turbo3 \
+  --cache-type-v turbo3 \
+  --spec-type nextn \
+  --draft-max 2 \
+  -fa on \
+  --host 0.0.0.0 \
+  --port 8080
+```
+
 ### QwenOpus 3.6 CODER COMPAT MTP (JackRong)
 - supposed to fix looping, but does not seem to entirely
 - `hf download Jackrong/Qwopus3.6-27B-Coder-Compat-MTP-GGUF Qwopus3.6-27B-Coder-Compat-MTP-Q8_0.gguf --local-dir .`
