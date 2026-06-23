@@ -35,6 +35,7 @@ https://github.com/ggml-org/llama.cpp/releases
 ### QwenOpus 3.6 CODER COMPAT MTP (JackRong)
 - supposed to fix looping
 - `hf download Jackrong/Qwopus3.6-27B-Coder-Compat-MTP-GGUF Qwopus3.6-27B-Coder-Compat-MTP-Q8_0.gguf --local-dir .`
+```
 llama-server --model /Users/${USER}/.lmstudio/models/Jackrong/Qwopus3.6-27B-Coder-COMPAT-MTP-GGUF/Qwopus3.6-27B-Coder-Compat-MTP-Q8_0.gguf \
   -c 80000 \
   -b 2048 \
