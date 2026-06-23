@@ -1,3 +1,8 @@
+# Running todo
+1. Test new jinja template on CODER COMPAT MTP, hoping it keeps the speed while correcting the looping. Performance should be appx equal.
+2. Test AtomicChat build, which is more recently updated than the Tom one you are currently using
+   - MoE versions may now work better with jinja template? if so then this could be a speedier option.
+
 # Enhanced local model setup for llama w/ guardrails
 To use forge-guardrails to improve local model peformance: https://github.com/antoinezambelli/forgehttps://github.com/steelec/LLM_Coding_Support/blob/main/README.md
 - can be setup in proxy mode to just point to current server (e.g., LMStudio)
