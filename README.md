@@ -33,7 +33,29 @@ https://github.com/ggml-org/llama.cpp/releases
 
 ## Run llama-server
 - alternative, can run `llama-cli` for testing purposes
+- can run turboquant compatible versions as well
 - 
+
+### Qwen 3.7 27B dense
+- reliable, but heavy and slow so we use turboquant
+- b/c of this, we can fit the full context in mem!
+```
+/Users/${USER}/Documents/code/llama-cpp-turboquant/build/bin/llama-server \
+  --model /Users/${USER}/.lmstudio/models/Jackrong/Qwen3.6-27B-GGUF/Qwen3.6-27B-Q8_0.gguf \
+  -c 262144 \
+  -np 1 \
+  -b 2048 \
+  -ub 2048 \
+  -ngl 999 \
+  --temp 0.9 \
+  --top-p 0.90 \
+  --top-k 20 \
+  --cache-type-k q8_0 \
+  --cache-type-v turbo4 \
+  -fa on \
+  --host 0.0.0.0 \
+  --port 8080
+```
 ### QwenOpus 3.6 CODER COMPAT MTP (JackRong)
 - supposed to fix looping, but does not seem to entirely
 - `hf download Jackrong/Qwopus3.6-27B-Coder-Compat-MTP-GGUF Qwopus3.6-27B-Coder-Compat-MTP-Q8_0.gguf --local-dir .`
