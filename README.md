@@ -18,6 +18,7 @@ To use forge-guardrails to improve local model peformance: https://github.com/an
 ## Install hugging face cli
 Allows you to download models directly from cli
 - `brew install python`
+- `brew install cmake`
 - `curl -LsSf https://hf.co/cli/install.sh | bash`
 
 ### Example
@@ -89,6 +90,7 @@ llama-server \
 
 ## Take advantage of rotorquant
 Allows much faster interaction (prefill only?) and lower quantization of k / v caches without loss of precision
+- install git repo and build (`brew install cmake` if necessary)
 ```
 git clone https://github.com/johndpope/llama-cpp-turboquant.git
 cd llama-cpp-turboquant
@@ -97,6 +99,27 @@ git checkout feature/planarquant-kv-cache
 # Build with native Apple Silicon Metal support
 cmake -B build -DGGML_METAL=ON -DGGML_METAL_EMBED_LIBRARY=ON -DCMAKE_BUILD_TYPE=Release
 cmake --build build -j
+```
+
+### Run model
+We cannot use the MTP models, as it does not work on that architecture
+```
+./build/bin/llama-server --model /Users/${USER}/.lmstudio/models/Jackrong/Qwen3.6-27B-GGUF/Qwen3.6-27B-Q8_0.gguf \
+  -c 80000 \
+  -np 1 \
+  -b 2048 \
+  -ub 2048 \
+  -ngl 999 \
+  --temp 0.9 \
+  --top-p 0.90 \
+  --top-k 20 \
+  --cache-type-k iso3 \
+  --cache-type-v iso3 \
+  --spec-type draft-mtp \
+  --spec-draft-n-max 3 \
+  -fa on \
+  --host 0.0.0.0 \
+  --port 8080
 ```
 
 ## Install forge-guardrails
