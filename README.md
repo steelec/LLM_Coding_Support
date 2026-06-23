@@ -36,7 +36,7 @@ https://github.com/ggml-org/llama.cpp/releases
 - supposed to fix looping
 - `hf download Jackrong/Qwopus3.6-27B-Coder-Compat-MTP-GGUF Qwopus3.6-27B-Coder-Compat-MTP-Q8_0.gguf --local-dir .`
 ```
-llama-server --model /Users/${USER}/.lmstudio/models/Jackrong/Qwopus3.6-27B-Coder-COMPAT-MTP-GGUF/Qwopus3.6-27B-Coder-Compat-MTP-Q8_0.gguf \
+llama-server --model /Users/csteele/.lmstudio/models/Jackrong/Qwopus3.6-27B-Coder-COMPAT-MTP-GGUF/Qwopus3.6-27B-Coder-Compat-MTP-Q8_0.gguf \
   -c 80000 \
   -b 2048 \
   -ub 2048 \
@@ -57,6 +57,7 @@ llama-server --model /Users/${USER}/.lmstudio/models/Jackrong/Qwopus3.6-27B-Code
   --host 0.0.0.0 \
   --port 8080 \
   -fa on \
+  -np 1 \
   --metrics
 ```
 
@@ -86,6 +87,17 @@ llama-server \
   --metrics
 ```
 
+## Take advantage of rotorquant
+Allows much faster interaction (prefill only?) and lower quantization of k / v caches without loss of precision
+```
+git clone https://github.com/johndpope/llama-cpp-turboquant.git
+cd llama-cpp-turboquant
+git checkout feature/planarquant-kv-cache
+
+# Build with native Apple Silicon Metal support
+cmake -B build -DGGML_METAL=ON -DGGML_METAL_EMBED_LIBRARY=ON -DCMAKE_BUILD_TYPE=Release
+cmake --build build -j
+```
 
 ## Install forge-guardrails
 python package, requires version 3.12: https://github.com/antoinezambelli/forge
