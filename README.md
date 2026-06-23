@@ -15,6 +15,14 @@ To use forge-guardrails to improve local model peformance: https://github.com/an
   - set to 56GB (for 64 GB mac): `sudo sysctl iogpu.wired_limit_mb=57344`
   - default is `sysctl iogpu.wired_limit_mb=0`
 
+## Install hugging face cli
+Allows you to download models directly from cli
+- `brew install python`
+- `curl -LsSf https://hf.co/cli/install.sh | bash`
+
+### Example
+- hf download Jackrong/Qwopus3.6-27B-Coder-Compat-MTP-GGUF Qwopus3.6-27B-Coder-Compat-MTP-Q8_0.gguf
+
 ## Install llama
 https://github.com/ggml-org/llama.cpp/releases
 - create directory `~/Documents/code/tools`
