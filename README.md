@@ -78,6 +78,8 @@ Trying to get the best of all worlds, as dense turboquant gets bogged down w/ la
   --spec-type nextn \
   --draft-max 2 \
   -fa on \
+  --jinja \
+  --chat-template-file /Users/${USER}/Documents/code/chat_template.jinja \
   --host 0.0.0.0 \
   --port 8080
 ```
