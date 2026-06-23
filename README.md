@@ -29,7 +29,7 @@ https://github.com/ggml-org/llama.cpp/releases
 - create directory `~/Documents/code/tools`
 - download (e.g.): `curl -O https://github.com/ggml-org/llama.cpp/releases/download/b9437/llama-b9437-bin-macos-arm64.tar.gz -L`
 - untar: `tar -xvf llama*`
-- link to local bin (e.g.): `ln -s /Users/csteele/Documents/code/tools/llama-b9437/llama* ~/.local/bin/.` 
+- link to local bin (e.g.): `ln -s /Users/${USER}/Documents/code/tools/llama-b9437/llama* ~/.local/bin/.` 
 
 ## Run llama-server
 - alternative, can run `llama-cli` for testing purposes
@@ -37,7 +37,7 @@ https://github.com/ggml-org/llama.cpp/releases
 - supposed to fix looping
 - `hf download Jackrong/Qwopus3.6-27B-Coder-Compat-MTP-GGUF Qwopus3.6-27B-Coder-Compat-MTP-Q8_0.gguf --local-dir .`
 ```
-llama-server --model /Users/csteele/.lmstudio/models/Jackrong/Qwopus3.6-27B-Coder-COMPAT-MTP-GGUF/Qwopus3.6-27B-Coder-Compat-MTP-Q8_0.gguf \
+llama-server --model /Users/${USER}/.lmstudio/models/Jackrong/Qwopus3.6-27B-Coder-COMPAT-MTP-GGUF/Qwopus3.6-27B-Coder-Compat-MTP-Q8_0.gguf \
   -c 80000 \
   -b 2048 \
   -ub 2048 \
@@ -65,6 +65,8 @@ llama-server --model /Users/csteele/.lmstudio/models/Jackrong/Qwopus3.6-27B-Code
 - https://huggingface.co/Jackrong/Qwopus3.5-9B-v3-GGUF
 - test downloads with `--dry-run` to make sure you are getting what you want
 - `hf download Jackrong/Qwopus3.5-9B-v3-GGUF Qwopus3.5-9B-v3.Q8_0.gguf --local-dir .`
+
+- not tested yet, but could be good to try!
 ```
 llama-server \
   --model /Users/${USER}/.lmstudio/models/Jackrong/Qwopus3.5-9B-v3-GGUF/Qwopus3.5-9B-v3.Q8_0.gguf \
@@ -72,6 +74,10 @@ llama-server \
   -np 1 \
   -b 2048 \
   -ub 2048 \
+  --chat-template-kwargs '{"preserve_thinking": true}' \
+  --spec-type draft-mtp \
+  --spec-draft-n-max 3 \
+  --jinja \
   -ngl 999 \
   --temp 1.0 \
   --top-p 0.95 \
@@ -116,7 +122,7 @@ models/prithivMLmods/VibeThinker-3B-GGUF/2026_06_reasoning_JohnRoger.jinja
 
 ```
 llama-server \
-  --model /Users/csteele/.lmstudio/models/prithivMLmods/VibeThinker-3B-GGUF/VibeThinker-3B.Q8_0.gguf \
+  --model /Users/${USER}/.lmstudio/models/prithivMLmods/VibeThinker-3B-GGUF/VibeThinker-3B.Q8_0.gguf \
   -c 64000 \
   -np 1 \
   -b 2048 \
@@ -125,7 +131,7 @@ llama-server \
   --temp 1.0 \
   --top-p 0.95 \
   --min-p 0.05 \
-  --chat-template-file /Users/csteele/.lmstudio/models/prithivMLmods/VibeThinker-3B-GGUF/2026_06_reasoning_JohnRoger.jinja \
+  --chat-template-file /Users/${USER}/.lmstudio/models/prithivMLmods/VibeThinker-3B-GGUF/2026_06_reasoning_JohnRoger.jinja \
   -fa on \
   --host 0.0.0.0 \
   --port 8081
