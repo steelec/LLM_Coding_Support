@@ -64,36 +64,31 @@ llama-server --model /Users/csteele/.lmstudio/models/Jackrong/Qwopus3.6-27B-Code
 
 ### VibeCoder 3B
 For math, science, and programming reasoning. Not a tool caller. Likely not very good at writing actual code(?).
-- see here for updated implementation: https://github.com/ricardodeazambuja/vibethinker_tests/tree/main
+>> See here for updated wrapping for tool calling, with testing: https://github.com/ricardodeazambuja/vibethinker_tests/tree/main
+
 - https://huggingface.co/prithivMLmods/VibeThinker-3B-GGUF
 - create directory in models: `prithivMLmods/VibeThinker-3B-GGUF`
 - also grabbed the reasoning template from JohnRoger (still cannot use tool calls though!)
-- `hf download prithivMLmods/VibeThinker-3B-GGUF VibeThinker-3B.F32.gguf --local-dir .`
-models/prithivMLmods/VibeThinker-3B-GGUF/VibeThinker-3B.F32.gguf
+- `hf download prithivMLmods/VibeThinker-3B-GGUF VibeThinker-3B.Q8_0.gguf --local-dir .`
+
+models/prithivMLmods/VibeThinker-3B-GGUF/VibeThinker-3B.Q8_0.gguf
 models/prithivMLmods/VibeThinker-3B-GGUF/2026_06_reasoning_JohnRoger.jinja
 
 ```
-llama-server \                                                                                              
-  --model /Users/${USER}/.lmstudio/models/Jackrong/Qwopus3.6-27B-Coder-MTP-GGUF/Qwopus3.6-27B-Coder-MTP-Q8_0.gguf \
-  --flash-attn on \
-  -c 200000 \
-  -ngl 999 \
-  --temp 0.9 \
-  --top-p 0.95 \
-  --top-k 20 \
-  --min-p 0.0 \
-  --presence-penalty 0.0 \
-  --repeat-penalty 1.0 \
-  --chat-template-kwargs '{"preserve_thinking": true}' \
-  --spec-type draft-mtp \
-  --spec-draft-n-max 3 \
-  --jinja \
-  --cache-type-k q8_0 \
-  --cache-type-v q8_0 \
-  --host 0.0.0.0 \
-  --port 8080 \
+llama-server \
+  --model /Users/csteele/.lmstudio/models/prithivMLmods/VibeThinker-3B-GGUF/VibeThinker-3B.Q8_0.gguf \
+  -c 64000 \
   -np 1 \
-  --metrics \
+  -b 2048 \
+  -ub 2048 \
+  -ngl 999 \
+  --temp 1.0 \
+  --top-p 0.95 \
+  --min-p 0.05 \
+  --chat-template-file /Users/csteele/.lmstudio/models/prithivMLmods/VibeThinker-3B-GGUF/2026_06_reasoning_JohnRoger.jinja \
+  -fa on \
+  --host 0.0.0.0 \
+  --port 8081
 ```
 
 ### QwenOpus 3.6 CODER MTP (JackRong)
