@@ -61,6 +61,45 @@ llama-server --model /Users/csteele/.lmstudio/models/Jackrong/Qwopus3.6-27B-Code
   -np 1 \
   --metrics
 ```
+### QwenOpus 9B
+- https://huggingface.co/Jackrong/Qwopus3.5-9B-v3-GGUF
+- test downloads with `--dry-run` to make sure you are getting what you want
+- `hf download Jackrong/Qwopus3.5-9B-v3-GGUF Qwopus3.5-9B-v3.Q8_0.gguf --local-dir .`
+```
+llama-server \
+  --model /Users/${USER}/.lmstudio/models/Jackrong/Qwopus3.5-9B-v3-GGUF/Qwopus3.5-9B-v3.Q8_0.gguf \
+  -c 128000 \
+  -np 1 \
+  -b 2048 \
+  -ub 2048 \
+  -ngl 999 \
+  --temp 1.0 \
+  --top-p 0.95 \
+  --cache-type-k q4_0 \
+  --cache-type-v q4_0 \
+  -fa on \
+  --host 0.0.0.0 \
+  --port 8082
+```
+
+#### Turboquant
+For faster prefill and slightly less mem
+```
+/Users/${USER}/Documents/code/llama-cpp-turboquant/build/bin/llama-server \
+  --model /Users/${USER}/.lmstudio/models/Jackrong/Qwopus3.5-9B-v3-GGUF/Qwopus3.5-9B-v3.Q8_0.gguf \
+  -c 128000 \
+  -np 1 \
+  -b 2048 \
+  -ub 2048 \
+  -ngl 999 \
+  --temp 1.0 \
+  --top-p 0.95 \
+  --cache-type-k turbo3 \
+  --cache-type-v turbo3 \
+  -fa on \
+  --host 0.0.0.0 \
+  --port 8082
+```
 
 ### VibeCoder 3B
 For math, science, and programming reasoning. Not a tool caller. Likely not very good at writing actual code(?).
