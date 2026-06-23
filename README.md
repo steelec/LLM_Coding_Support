@@ -2,6 +2,27 @@
 1. Test new jinja template on CODER COMPAT MTP, hoping it keeps the speed while correcting the looping. Performance should be appx equal.
 2. Test AtomicChat build, which is more recently updated than the Tom one you are currently using
    - MoE versions may now work better with jinja template? if so then this could be a speedier option.
+   - DONE: seems smart, not yet optimized (increase b / ub)
+3. Try `AtomicChat/Qwen3.6-35B-A3B-UDT-MTP-GGUF`
+```
+/Users/${USER}/Documents/code/atomicchat-llama-cpp-turboquant/build/bin/llama-server \
+  -m /Users/csteele/.lmstudio/models/AtomicCHat/Qwen3.6-35B-A3B-UDT-MTP-GGUF/Qwen3.6-35B-A3B-UDT-Q8_K_XL_MTP.gguf \
+  -md /Users/csteele/.lmstudio/models/AtomicCHat/Qwen3.6-35B-A3B-UDT-MTP-GGUF/Qwen3.6-35B-A3B-UDT-Q8_K_XL_MTP.gguf \
+  --spec-type nextn \
+  --spec-draft-n-max 2 \
+  --spec-draft-p-min 0.80 \
+  -c 131072 \
+  -b 2048 \
+  -ub 2048 \
+  -ngl 999 \
+  -fa on \
+  --cache-type-k q8_0 \
+  --cache-type-v turbo3 \
+  --cache-type-k-draft q8_0 \
+  --cache-type-v-draft turbo3 \
+  --host 0.0.0.0 \
+  --port 8080
+```
 
 # Enhanced local model setup for llama w/ guardrails
 To use forge-guardrails to improve local model peformance: https://github.com/antoinezambelli/forgehttps://github.com/steelec/LLM_Coding_Support/blob/main/README.md
@@ -67,7 +88,7 @@ Useful to reduce looping, which you saw a lot of in the Qwen 3.6 variants (not i
   --port 8080
 ```
 
-### Qwenopus 3.6 CODER COMPAT MTP (JackRong) with turboquant
+### Qwenopus 3.6 CODER COMPAT MTP (AtomicChat) with turboquant
 Trying to get the best of all worlds, as dense turboquant gets bogged down w/ large context (2 tok/s)
 - if this does not work look at AtomicChat, this is more up-to-date it seems (but the improvements in tok/s seem not so great)
   - https://huggingface.co/AtomicChat/Qwen3.6-27B-UDT-MTP-GGUF
