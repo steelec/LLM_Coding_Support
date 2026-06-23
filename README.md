@@ -64,6 +64,23 @@ Useful to reduce looping, which you saw a lot of in the Qwen 3.6 variants (not i
 
 ### Qwenopus 3.6 CODER COMPAT MTP (JackRong) with turboquant
 Trying to get the best of all worlds, as dense turboquant gets bogged down w/ large context (2 tok/s)
+- if this does not work look at AtomicChat, this is more up-to-date it seems (but the improvements in tok/s seem not so great)
+  - https://huggingface.co/AtomicChat/Qwen3.6-27B-UDT-MTP-GGUF
+  - https://github.com/AtomicBot-ai/atomic-llama-cpp-turboquant/tree/feature/turboquant-kv-cache
+ ```
+Where the "Huge" Gains Actually Happen
+The major speedups (+24% to +36%) you see highlighted for this fork occur on the Mixture-of-Experts (MoE) models, specifically the Qwen 3.6 35B-A3B (which only activates 3B parameters per token).
+
+On an MoE model, the main model's verification pass is computationally heavy relative to its active parameter size, allowing the drafting compute to completely hide inside the parallel processing pipeline.
+
+Why use UDT and NextN on the 27B then?
+The main reason to use the UDT framework on the 27B dense model isn't a massive speed jump over a standard baseline—it's regression prevention.
+
+Without UDT's tensor masks, running NextN decoding while simultaneously squeezing the KV cache down to 3-bits creates so much math noise that the draft head guesses wrong constantly. This drops the acceptance rate so low that standard NextN setups actually run 7% to 12% slower than regular decoding.
+
+The combination of a UDT file and NextN just allows you to squeeze your context memory down to turbo3 without suffering that speed penalty, keeping you at a net-positive (albeit modest) gain.
+```
+    ```
 ```
 /Users/${USER}/Documents/code/llama-cpp-turboquant/build/bin/llama-server \
   --model /Users/${USER}/.lmstudio/models/Jackrong/Qwopus3.6-27B-Coder-COMPAT-MTP-GGUF/Qwopus3.6-27B-Coder-Compat-MTP-Q8_0.gguf \
