@@ -101,19 +101,21 @@ The combination of a UDT file and NextN just allows you to squeeze your context 
 
     ```
 ```
-/Users/${USER}/Documents/code/llama-cpp-turboquant/build/bin/llama-server \
+/Users/${USER}/Documents/code/atomic-llama-cpp-turboquant/build/bin/llama-server \
   --model /Users/${USER}/.lmstudio/models/AtomicChat/Qwen3.6-27B-UDT-MTP-GGUF/Qwen3.6-27B-UDT-Q8_K_XL_MTP.gguf \
   --model-draft /Users/${USER}/.lmstudio/models/AtomicChat/Qwen3.6-27B-UDT-MTP-GGUF/Qwen3.6-27B-UDT-Q8_K_XL_MTP.gguf \
   -c 131072 \
   -np 1 \
-  -b 512 \
-  -ub 512 \
+  -b 2048 \
+  -ub 2048 \
   -ngl 999 \
+  -fa on \
+  --spec-type draft-mtp \
+  --spec-draft-n-max 2 \
   --cache-type-k q8_0 \
   --cache-type-v turbo3 \
-  --spec-type mtp \
-  --spec-draft-n-max 3 \
-  -fa on \
+  --cache-type-k-draft q8_0 \
+  --cache-type-v-draft turbo3 \
   --jinja \
   --chat-template-file /Users/${USER}/Documents/code/chat_template.jinja \
   --host 0.0.0.0 \
