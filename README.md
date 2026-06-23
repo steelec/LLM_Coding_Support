@@ -21,7 +21,7 @@ Allows you to download models directly from cli
 - `curl -LsSf https://hf.co/cli/install.sh | bash`
 
 ### Example
-- hf download Jackrong/Qwopus3.6-27B-Coder-Compat-MTP-GGUF Qwopus3.6-27B-Coder-Compat-MTP-Q8_0.gguf
+- `hf download Jackrong/Qwopus3.6-27B-Coder-Compat-MTP-GGUF Qwopus3.6-27B-Coder-Compat-MTP-Q8_0.gguf --local-dir .`
 
 ## Install llama
 https://github.com/ggml-org/llama.cpp/releases
@@ -32,7 +32,36 @@ https://github.com/ggml-org/llama.cpp/releases
 
 ## Run llama-server
 - alternative, can run `llama-cli` for testing purposes
+### QwenOpus 3.6 CODER COMPAT MTP (JackRong)
+- supposed to fix looping
+- `hf download Jackrong/Qwopus3.6-27B-Coder-Compat-MTP-GGUF Qwopus3.6-27B-Coder-Compat-MTP-Q8_0.gguf --local-dir .`
+llama-server --model /Users/${USER}/.lmstudio/models/Jackrong/Qwopus3.6-27B-Coder-COMPAT-MTP-GGUF/Qwopus3.6-27B-Coder-Compat-MTP-Q8_0.gguf \
+  -c 80000 \
+  -b 2048 \
+  -ub 2048 \
+  -ngl 999 \
+  --temp 0.9 \
+  --top-p 0.90 \
+  --top-k 20 \
+  --min-p 0.0 \
+  --presence-penalty 0.0 \
+  --repeat-penalty 1.1 \
+  --chat-template-kwargs '{"preserve_thinking": true}' \
+  --spec-type draft-mtp \
+  --spec-draft-n-max 3 \
+  --jinja \
+  --cache-type-k q4_0 \
+  --cache-type-v q4_0 \
+  --cache-prompt \
+  --host 0.0.0.0 \
+  --port 8080 \
+  -fa on \
+  --metrics
+```
+
+### QwenOpus 3.6 CODER MTP (JackRong)
 - here we run an MTP-style for agent usage, with full offloading to GPU (QwenOpus 3.6 MTP from JackRong)
+- this looped like nobody's business
 ```
 llama-server \                                                                                              
   --model /Users/${USER}/.lmstudio/models/Jackrong/Qwopus3.6-27B-Coder-MTP-GGUF/Qwopus3.6-27B-Coder-MTP-Q8_0.gguf \
@@ -55,6 +84,7 @@ llama-server \
   --port 8080 \
   --metrics
 ```
+
 
 ## Install forge-guardrails
 python package, requires version 3.12: https://github.com/antoinezambelli/forge
