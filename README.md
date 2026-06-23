@@ -64,8 +64,9 @@ llama-server --model /Users/csteele/.lmstudio/models/Jackrong/Qwopus3.6-27B-Code
 
 ### VibeCoder 3B
 For math, science, and programming reasoning. Not a tool caller. Likely not very good at writing actual code(?).
->> See here for updated wrapping for tool calling, with testing: https://github.com/ricardodeazambuja/vibethinker_tests/tree/main
+Initial testing suggests that this is both fast and **not very accurate** (Reimmanian manifold question failure in details).
 
+>> See here for updated wrapping for tool calling, with testing: https://github.com/ricardodeazambuja/vibethinker_tests/tree/main
 - https://huggingface.co/prithivMLmods/VibeThinker-3B-GGUF
 - create directory in models: `prithivMLmods/VibeThinker-3B-GGUF`
 - also grabbed the reasoning template from JohnRoger (still cannot use tool calls though!)
