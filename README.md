@@ -12,8 +12,8 @@
   --spec-draft-n-max 2 \
   --spec-draft-p-min 0.80 \
   -c 131072 \
-  -b 2048 \
-  -ub 2048 \
+  -b 1024 \
+  -ub 1024 \
   -ngl 999 \
   -fa on \
   --cache-type-k q8_0 \
