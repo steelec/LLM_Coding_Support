@@ -37,6 +37,17 @@ To use forge-guardrails to improve local model peformance: https://github.com/an
 - or with the full llama.cpp backend setup (there are additional benefits to this)
 
 ## MAC-specific setup
+
+### Monitoring tools
+- monitor GPU and CPU processing and power usage
+  - `sudo powermetrics --samplers cpu_power,gpu_power | grep -E "GPU|residency"`
+- monitor GPU memory usage
+  - `sudo footprint llama-server`
+    - where:
+      - `mapped file` is the model memmapped into RAM
+      - `untagged VM_ALLOCATE` is the KV cache allocation
+      - `MALLOC_LARGE` is the runtime engine overhead
+
 ### Programs
 - `tailscale` (add to autostart!)
 - `brew` (if you want to be doing some more custom things!)
