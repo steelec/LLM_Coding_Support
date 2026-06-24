@@ -1,13 +1,16 @@
 # Running todo
-1. Test new jinja template on CODER COMPAT MTP, hoping it keeps the speed while correcting the looping. Performance should be appx equal.
-2. Test AtomicChat build, which is more recently updated than the Tom one you are currently using
+1. 
+2. Test new jinja template on CODER COMPAT MTP, hoping it keeps the speed while correcting the looping. Performance should be appx equal.
+   - this is, so far, very good w/ the atomicchat testing (UDT MTP) but not tested otherwise
+4. Test AtomicChat build, which is more recently updated than the Tom one you are currently using
    - MoE versions may now work better with jinja template? if so then this could be a speedier option.
    - DONE: seems smart, not yet optimized (increase b / ub)
-3. Try `AtomicChat/Qwen3.6-35B-A3B-UDT-MTP-GGUF`
+5. Try `AtomicChat/Qwen3.6-35B-A3B-UDT-MTP-GGUF`
    - this branch does not work quite as advertised, no specification of -md necessary for this here
    - A3B is v. fast (40-50 tok/s), quality not tested
    - web chat interface has a bug (does not allow scrolling)
    - --spec-draft-p-min 0.80  does not seem to work so set --draft-p-min 0.80 (older flag)
+     - this ensures that low probability token drafts are not considered and can speed us up!
 ```
 /Users/${USER}/Documents/code/atomic-llama-cpp-turboquant/build/bin/llama-server \
   -m /Users/${USER}/.lmstudio/models/AtomicChat/Qwen3.6-35B-A3B-UDT-MTP-GGUF/Qwen3.6-35B-A3B-UDT-Q8_K_XL_MTP.gguf \
