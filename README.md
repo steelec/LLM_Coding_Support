@@ -4,13 +4,17 @@
    - MoE versions may now work better with jinja template? if so then this could be a speedier option.
    - DONE: seems smart, not yet optimized (increase b / ub)
 3. Try `AtomicChat/Qwen3.6-35B-A3B-UDT-MTP-GGUF`
+   - this branch does not work quite as advertised, no specification of -md necessary for this here
+   - A3B is v. fast (40-50 tok/s), quality not tested
+   - web chat interface has a bug (does not allow scrolling)
+   - --spec-draft-p-min 0.80  does not seem to work so set --draft-p-min 0.80 (older flag)
 ```
-/Users/${USER}/Documents/code/atomicchat-llama-cpp-turboquant/build/bin/llama-server \
-  -m /Users/csteele/.lmstudio/models/AtomicCHat/Qwen3.6-35B-A3B-UDT-MTP-GGUF/Qwen3.6-35B-A3B-UDT-Q8_K_XL_MTP.gguf \
-  -md /Users/csteele/.lmstudio/models/AtomicCHat/Qwen3.6-35B-A3B-UDT-MTP-GGUF/Qwen3.6-35B-A3B-UDT-Q8_K_XL_MTP.gguf \
-  --spec-type nextn \
+/Users/${USER}/Documents/code/atomic-llama-cpp-turboquant/build/bin/llama-server \
+  -m /Users/${USER}/.lmstudio/models/AtomicChat/Qwen3.6-35B-A3B-UDT-MTP-GGUF/Qwen3.6-35B-A3B-UDT-Q8_K_XL_MTP.gguf \
+  --spec-type draft-mtp \
   --spec-draft-n-max 2 \
   --spec-draft-p-min 0.80 \
+  --draft-p-min 0.80 \
   -c 131072 \
   -b 1024 \
   -ub 1024 \
@@ -105,7 +109,8 @@ cmake -B build -DGGML_METAL=ON -DGGML_METAL_EMBED_LIBRARY=ON -DCMAKE_BUILD_TYPE=
 cmake --build build --config Release -j
 ```
 4. Can now be run from `~/Documents/code/atomic-llama-cpp-turboquant/build/bin/llama-server`
-
+- --draft-p-min 0.80 set to reduce time at high contexts (maybe?) 
+- does not look like we actually need the --model-draft? it does it itself now?
 ```
 Where the "Huge" Gains Actually Happen
 The major speedups (+24% to +36%) you see highlighted for this fork occur on the Mixture-of-Experts (MoE) models, specifically the Qwen 3.6 35B-A3B (which only activates 3B parameters per token).
@@ -127,12 +132,13 @@ The combination of a UDT file and NextN just allows you to squeeze your context 
   --model-draft /Users/${USER}/.lmstudio/models/AtomicChat/Qwen3.6-27B-UDT-MTP-GGUF/Qwen3.6-27B-UDT-Q8_K_XL_MTP.gguf \
   -c 131072 \
   -np 1 \
-  -b 2048 \
-  -ub 2048 \
+  -b 1024 \
+  -ub 1024 \
   -ngl 999 \
   -fa on \
   --spec-type draft-mtp \
   --spec-draft-n-max 2 \
+  --draft-p-min 0.80 \
   --cache-type-k q8_0 \
   --cache-type-v turbo3 \
   --cache-type-k-draft q8_0 \
