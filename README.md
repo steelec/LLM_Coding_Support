@@ -10,6 +10,9 @@
    - web chat interface has a bug (does not allow scrolling)
    - --spec-draft-p-min 0.80  does not seem to work so set --draft-p-min 0.80 (older flag)
      - this ensures that low probability token drafts are not considered and can speed us up!
+6. Try DFlash (beellama)
+   - this did not work as of Jun 25, 2026. Model loads, but first prompt leads to crash
+   - after much testing of params, leave for the moment
 5. Try `/Users/${USER}/.lmstudio/models/unsloth/Qwen-AgentWorld-35B-A3B-GGUF/Qwen-AgentWorld-35B-A3B-UD-Q8_K_XL.gguf`
 6. implement `headroom` around opencode harness, now that it can be used to wrap
    - (https://github.com/headroomlabs-ai/headroom/pull/1105)
@@ -95,6 +98,45 @@ Useful to reduce looping, which you saw a lot of in the Qwen 3.6 variants (not i
 - https://huggingface.co/froggeric/Qwen-Fixed-Chat-Templates/blob/main/chat_template.jinja
 - `hf download froggeric/Qwen-Fixed-Chat-Templates chat_template.jinja --local-dir ~/Documents/code/.`
 
+### Qweb 3.6 DFlash speculative decoding with beellama
+**Not currently working on your MAC M1 setup (after testing)**
+- Get and build Beellama
+  - https://github.com/Anbeeld/beellama.cpp.git
+```
+git clone https://github.com/Anbeeld/beellama.cpp.git
+cd beellama.cpp
+cmake -B build -DGGML_METAL=ON -DCMAKE_BUILD_TYPE=Release
+cmake --build build -j
+```
+- Requires 3 files:
+  - Target model (https://huggingface.co/unsloth/Qwen3.6-27B-GGUF)
+  - Multimodal projector file (mmproj) (not required, unless wanting to feed raw images)
+    -   `--mmproj /Users/${USER}/.lmstudio/models/Anbeeld/Qwen3.6-27B-DFlash-GGUF/Qwen3.6-27B-DFlash-bf16.gguf \`
+        `--no-mmproj-offload \` (on MAC metal, this has to be handled by CPU)
+  - DFlash draft model: (https://huggingface.co/Anbeeld/Qwen3.6-27B-DFlash-GGUF)
+    - `hf download Anbeeld/Qwen3.6-27B-DFlash-GGUF --local-dir .`
+```
+/Users/${USER}/Documents/code/beellama.cpp/build/bin/llama-server \
+  --model /Users/${USER}/.lmstudio/models/unsloth/Qwen3.6-27B-GGUF/Qwen3.6-27B-Q8_0.gguf \
+  --spec-draft-model /Users/${USER}/.lmstudio/models/Anbeeld/Qwen3.6-27B-DFlash-GGUF/Qwen3.6-27B-DFlash-Q8_0.gguf \
+  --spec-type dflash \
+  --spec-dflash-cross-ctx 1024 \
+  --port 8080 \
+  -np 1 \
+  --kv-unified \
+  -ngl all \
+  --spec-draft-ngl all \
+  -b 2048 -ub 512 \
+  --ctx-size 102400 \
+  --cache-type-k q5_0 --cache-type-v q4_1 \
+  --flash-attn on \
+  --jinja \
+  --chat-template-file /Users/${USER}/Documents/code/chat_template.jinja \
+  --no-mmap --mlock \
+  --reasoning on \
+  --temp 0.6 --top-k 20 --top-p 1.0 --min-p 0.0 --host 0.0.0.0
+```
+
 ### Qwen 3.7 27B dense
 - reliable, but heavy and slow so we use turboquant
 - b/c of this, we can fit the full context in mem!
@@ -154,6 +196,7 @@ hub.com/ggml-org/llama.cpp/pull/13194#issuecomment-2868343055)
     - May be able to tune with `--ctx-checkpoints 48 --checkpoint-every-n-tokens 2048` to increase frequency and reduce size of checkpoints and therefore spend less than ~5 mins on every prompt
       - in this repo, we use: `-ctxcp 48 -cms 2048`
       - limited testing suggests that this does improve prompt processing by not clearing all of the previous context in the llama-server output
+      - Yes, it seems to recover a lot of the context, in simple testing ~40-90% tested on up to 40k context
     - $$\text{Checkpoint Size (Bytes)} = 2 \times \text{Layers} \times \text{Embedding Dim} \times \text{Head Dim} \times \text{Precision (Bytes)}$$
       - Size (MB) = 2*64*5124*128*2 (/(1024*1024) for MiB --> 167.90 MB)
         - $+$ 1.5KB * current token position for data that keeps track of the checkpoints (e.g., $150\text{ MiB} + (114,545 \times 0.001438\text{ MiB}) = \mathbf{314.7\text{ MiB}}$ (where MiB is 1024*1024 bytes)
@@ -217,7 +260,7 @@ llama-server --model /Users/${USER}/.lmstudio/models/Jackrong/Qwopus3.6-27B-Code
   --min-p 0.0 \
   --presence-penalty 0.0 \
   --repeat-penalty 1.1 \
-  --chat-template-kwargs '{"preserve_thinking": true}' \
+  --chat-template-file /Users/${USER}/Documents/code/chat_template.jinja \
   --spec-type draft-mtp \
   --spec-draft-n-max 3 \
   --jinja \
@@ -243,7 +286,7 @@ llama-server \
   -np 1 \
   -b 2048 \
   -ub 2048 \
-  --chat-template-kwargs '{"preserve_thinking": true}' \
+  --chat-template-file /Users/${USER}/Documents/code/chat_template.jinja \
   --spec-type draft-mtp \
   --spec-draft-n-max 3 \
   --jinja \
