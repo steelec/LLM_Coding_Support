@@ -1,7 +1,8 @@
 # Learnings
 - Dense model (27B) almost always better for complex coding
 - 35B 3B MOE is v. fast and pretty good overall, but maybe not as good for complex tasks
-- 
+- AtomicChat is quite stable and works well, implementing it with CODER COMPAT MTP may be a big win
+
 # Running todo
 2. Test new jinja template on CODER COMPAT MTP, hoping it keeps the speed while correcting the looping. Performance should be appx equal.
    - this is, so far, very good w/ the atomicchat testing (UDT MTP) but not tested otherwise
@@ -10,7 +11,7 @@
    - DONE: seems smart, not yet optimized (increase b / ub)
 5. Try `AtomicChat/Qwen3.6-35B-A3B-UDT-MTP-GGUF`
    - this branch does not work quite as advertised, no specification of -md necessary for this here
-   - A3B is v. fast (40-50 tok/s), quality not tested
+   - A3B is v. fast (40-50 tok/s), quality not extensively tested but expected to be lower based on others experience - good for simple coding but may break down with more complex tasks
    - web chat interface has a bug (does not allow scrolling)
    - --spec-draft-p-min 0.80  does not seem to work so set --draft-p-min 0.80 (older flag)
      - this ensures that low probability token drafts are not considered and can speed us up!
