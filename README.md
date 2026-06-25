@@ -1,5 +1,4 @@
 # Running todo
-1. 
 2. Test new jinja template on CODER COMPAT MTP, hoping it keeps the speed while correcting the looping. Performance should be appx equal.
    - this is, so far, very good w/ the atomicchat testing (UDT MTP) but not tested otherwise
 4. Test AtomicChat build, which is more recently updated than the Tom one you are currently using
@@ -12,7 +11,9 @@
    - --spec-draft-p-min 0.80  does not seem to work so set --draft-p-min 0.80 (older flag)
      - this ensures that low probability token drafts are not considered and can speed us up!
 5. Try `/Users/${USER}/.lmstudio/models/unsloth/Qwen-AgentWorld-35B-A3B-GGUF/Qwen-AgentWorld-35B-A3B-UD-Q8_K_XL.gguf`
-6. 
+6. implement `headroom` around opencode harness, now that it can be used to wrap
+   - (https://github.com/headroomlabs-ai/headroom/pull/1105)
+
 ```
 /Users/${USER}/Documents/code/atomic-llama-cpp-turboquant/build/bin/llama-server \
   -m /Users/${USER}/.lmstudio/models/AtomicChat/Qwen3.6-35B-A3B-UDT-MTP-GGUF/Qwen3.6-35B-A3B-UDT-Q8_K_XL_MTP.gguf \
@@ -33,10 +34,15 @@
   --port 8080
 ```
 
-# Enhanced local model setup for llama w/ guardrails
-To use forge-guardrails to improve local model peformance: https://github.com/antoinezambelli/forgehttps://github.com/steelec/LLM_Coding_Support/blob/main/README.md
+# Enhanced local model setup for llama (w/ guardrails if possible?)
+## Headroom
+Used to compress prompts (+ more) @ the harness level
+- now wraps opencode harness: https://github.com/headroomlabs-ai/headroom/pull/1105
+
+## To use forge-guardrails to improve local model peformance: https://github.com/antoinezambelli/forgehttps://github.com/steelec/LLM_Coding_Support/blob/main/README.md
 - can be setup in proxy mode to just point to current server (e.g., LMStudio)
 - or with the full llama.cpp backend setup (there are additional benefits to this)
+- --> NOT IMPLEMENTED
 
 ## MAC-specific setup
 
