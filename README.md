@@ -108,7 +108,7 @@ Useful to reduce looping, which you saw a lot of in the Qwen 3.6 variants (not i
   --port 8080
 ```
 
-### Qwenopus 3.6 CODER COMPAT MTP (AtomicChat) with turboquant
+### Qwenopus 3.6 UDT MTP (AtomicChat) with turboquant
 Trying to get the best of all worlds, as dense turboquant gets bogged down w/ large context (2 tok/s)
 - if this does not work look at AtomicChat, this is more up-to-date it seems (but the improvements in tok/s seem not so great)
   - https://huggingface.co/AtomicChat/Qwen3.6-27B-UDT-MTP-GGUF
@@ -127,6 +127,31 @@ cmake --build build --config Release -j
 4. Can now be run from `~/Documents/code/atomic-llama-cpp-turboquant/build/bin/llama-server`
 - --draft-p-min 0.80 set to reduce time at high contexts (maybe?) 
 - does not look like we actually need the --model-draft? it does it itself now?
+  - removed in current call (see below)
+- Assessment after 2+ days of testing:
+  - Very useable as a daily reliable driver - no hand-holding required in testing (at all!)
+  - Outputs seem accurate and controlled, no looping (note: currently using expanded chat template)
+  - Initially fairly fast (~100 input and ~8ish decode tok/s) but quickly decreases as context expands
+  - Falls to v. slow (~27-30 and ~1.8-2 tok/s) with fuller context (111k)
+  - There is additional headroom w/in 56 GB for more context at current turbo3 v-chache compression
+  - Did not play around with temperature at all (default here is 0.8, which is reasonable for this model)
+  - There may be additional tuning that can happen with -b / -ub for given hardware (?)
+  - Currently prompt processing requires a lot of re-computation on every prompt
+    - Potentially due to agent (opencode) changing metadata
+    - Apparently this interacts with the Qwen model architecture (hybrid/recurrent model maintains rolling memory record that relies on sequence order)
+      - forcing full prompt re-processing due to lack of cache data (likely due to SWA or hybrid/recurrent memory, see https://git
+hub.com/ggml-org/llama.cpp/pull/13194#issuecomment-2868343055) 
+      - active area of discussion: https://github.com/ggml-org/llama.cpp/pull/24035
+    - May be able to tune with `--ctx-checkpoints 48 --checkpoint-every-n-tokens 2048` to increase frequency and reduce size of checkpoints and therefore spend less than ~5 mins on every prompt
+    - $$\text{Checkpoint Size (Bytes)} = 2 \times \text{Layers} \times \text{Embedding Dim} \times \text{Head Dim} \times \text{Precision (Bytes)}$$
+      - Size (MB) = 2*64*5124*128*2 (/(1024*1024) for MiB --> 167.90 MB)
+        - $+$ 1.5KB * current token position for data that keeps track of the checkpoints (e.g., $150\text{ MiB} + (114,545 \times 0.001438\text{ MiB}) = \mathbf{314.7\text{ MiB}}$ (where MiB is 1024*1024 bytes)
+      - This is a balance though, as it takes up more and more mem!
+- Why / When use this model?
+  - Able to handle v. large context
+  - Require accurate output
+  - Slow when the context grows (but see above, this is due to be fixed upstream?)
+
 ```
 Where the "Huge" Gains Actually Happen
 The major speedups (+24% to +36%) you see highlighted for this fork occur on the Mixture-of-Experts (MoE) models, specifically the Qwen 3.6 35B-A3B (which only activates 3B parameters per token).
@@ -141,11 +166,9 @@ Without UDT's tensor masks, running NextN decoding while simultaneously squeezin
 The combination of a UDT file and NextN just allows you to squeeze your context memory down to turbo3 without suffering that speed penalty, keeping you at a net-positive (albeit modest) gain.
 ```
 
-    ```
 ```
 /Users/${USER}/Documents/code/atomic-llama-cpp-turboquant/build/bin/llama-server \
   --model /Users/${USER}/.lmstudio/models/AtomicChat/Qwen3.6-27B-UDT-MTP-GGUF/Qwen3.6-27B-UDT-Q8_K_XL_MTP.gguf \
-  --model-draft /Users/${USER}/.lmstudio/models/AtomicChat/Qwen3.6-27B-UDT-MTP-GGUF/Qwen3.6-27B-UDT-Q8_K_XL_MTP.gguf \
   -c 131072 \
   -np 1 \
   -b 1024 \
