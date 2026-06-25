@@ -35,9 +35,11 @@
 ```
 
 # Enhanced local model setup for llama (w/ guardrails if possible?)
+
 ## Headroom
 Used to compress prompts (+ more) @ the harness level
 - now wraps opencode harness: https://github.com/headroomlabs-ai/headroom/pull/1105
+- `pip install headroom-ai[all]`
 
 ## To use forge-guardrails to improve local model peformance: https://github.com/antoinezambelli/forgehttps://github.com/steelec/LLM_Coding_Support/blob/main/README.md
 - can be setup in proxy mode to just point to current server (e.g., LMStudio)
@@ -150,10 +152,13 @@ cmake --build build --config Release -j
 hub.com/ggml-org/llama.cpp/pull/13194#issuecomment-2868343055) 
       - active area of discussion: https://github.com/ggml-org/llama.cpp/pull/24035
     - May be able to tune with `--ctx-checkpoints 48 --checkpoint-every-n-tokens 2048` to increase frequency and reduce size of checkpoints and therefore spend less than ~5 mins on every prompt
+      - in this repo, we use: `-ctxcp 48 -cms 2048`
+      - limited testing suggests that this does improve prompt processing by not clearing all of the previous context in the llama-server output
     - $$\text{Checkpoint Size (Bytes)} = 2 \times \text{Layers} \times \text{Embedding Dim} \times \text{Head Dim} \times \text{Precision (Bytes)}$$
       - Size (MB) = 2*64*5124*128*2 (/(1024*1024) for MiB --> 167.90 MB)
         - $+$ 1.5KB * current token position for data that keeps track of the checkpoints (e.g., $150\text{ MiB} + (114,545 \times 0.001438\text{ MiB}) = \mathbf{314.7\text{ MiB}}$ (where MiB is 1024*1024 bytes)
       - This is a balance though, as it takes up more and more mem!
+      - 
 - Why / When use this model?
   - Able to handle v. large context
   - Require accurate output
@@ -192,6 +197,8 @@ The combination of a UDT file and NextN just allows you to squeeze your context 
   --jinja \
   --chat-template-file /Users/${USER}/Documents/code/chat_template.jinja \
   --host 0.0.0.0 \
+  -ctxcp 48 \
+  -cms 2048 \
   --port 8080
 ```
 
