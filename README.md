@@ -128,6 +128,7 @@ cmake --build build --config Release -j
 - --draft-p-min 0.80 set to reduce time at high contexts (maybe?) 
 - does not look like we actually need the --model-draft? it does it itself now?
   - removed in current call (see below)
+- `nextn` is potentially hallucinated at the repo level, or not implemented yet (but documented!)
 - Assessment after 2+ days of testing:
   - Very useable as a daily reliable driver - no hand-holding required in testing (at all!)
   - Outputs seem accurate and controlled, no looping (note: currently using expanded chat template)
