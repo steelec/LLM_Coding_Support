@@ -1,3 +1,7 @@
+# Learnings
+- Dense model (27B) almost always better for complex coding
+- 35B 3B MOE is v. fast and pretty good overall, but maybe not as good for complex tasks
+- 
 # Running todo
 2. Test new jinja template on CODER COMPAT MTP, hoping it keeps the speed while correcting the looping. Performance should be appx equal.
    - this is, so far, very good w/ the atomicchat testing (UDT MTP) but not tested otherwise
@@ -22,11 +26,11 @@
   -m /Users/${USER}/.lmstudio/models/AtomicChat/Qwen3.6-35B-A3B-UDT-MTP-GGUF/Qwen3.6-35B-A3B-UDT-Q8_K_XL_MTP.gguf \
   --spec-type draft-mtp \
   --spec-draft-n-max 2 \
-  --spec-draft-p-min 0.80 \
-  --draft-p-min 0.80 \
+  --spec-draft-p-min 0.75 \
+  -np 1
   -c 131072 \
-  -b 1024 \
-  -ub 1024 \
+  -b 2048 \
+  -ub 512 \
   -ngl 999 \
   -fa on \
   --cache-type-k q8_0 \
@@ -34,6 +38,9 @@
   --cache-type-k-draft q8_0 \
   --cache-type-v-draft turbo3 \
   --host 0.0.0.0 \
+  -ctxcp 48 \
+  -cms 2048 \
+  --cache-reuse 256 \
   --port 8080
 ```
 
@@ -242,6 +249,7 @@ The combination of a UDT file and NextN just allows you to squeeze your context 
   --host 0.0.0.0 \
   -ctxcp 48 \
   -cms 2048 \
+  --cache-reuse 256 \
   --port 8080
 ```
 
