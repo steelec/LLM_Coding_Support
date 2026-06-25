@@ -11,6 +11,8 @@
    - web chat interface has a bug (does not allow scrolling)
    - --spec-draft-p-min 0.80  does not seem to work so set --draft-p-min 0.80 (older flag)
      - this ensures that low probability token drafts are not considered and can speed us up!
+5. Try `/Users/${USER}/.lmstudio/models/unsloth/Qwen-AgentWorld-35B-A3B-GGUF/Qwen-AgentWorld-35B-A3B-UD-Q8_K_XL.gguf`
+6. 
 ```
 /Users/${USER}/Documents/code/atomic-llama-cpp-turboquant/build/bin/llama-server \
   -m /Users/${USER}/.lmstudio/models/AtomicChat/Qwen3.6-35B-A3B-UDT-MTP-GGUF/Qwen3.6-35B-A3B-UDT-Q8_K_XL_MTP.gguf \
