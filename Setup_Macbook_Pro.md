@@ -75,5 +75,24 @@ cmake --build build --config Release -j
 6. Run model with AtomicChat
 
 ```
-
+${ROOT_DIR}/atomic-llama-cpp-turboquant/build/bin/llama-server \
+  -m ${ROOT_DIR}/models/AtomicChat/Qwen3.6-35B-A3B-UDT-MTP-GGUF/Qwen3.6-35B-A3B-UDT-Q4_K_XL_MTP.gguf \
+  --spec-type draft-mtp \
+  --spec-draft-n-max 2 \
+  --spec-draft-p-min 0.75 \
+  -np 1
+  -c 131072 \
+  -b 2048 \
+  -ub 512 \
+  -ngl 999 \
+  -fa on \
+  --cache-type-k q8_0 \
+  --cache-type-v turbo3 \
+  --cache-type-k-draft q8_0 \
+  --cache-type-v-draft turbo3 \
+  --host 0.0.0.0 \
+  -ctxcp 48 \
+  -cms 2048 \
+  --cache-reuse 256 \
+  --port 8080
 ```
