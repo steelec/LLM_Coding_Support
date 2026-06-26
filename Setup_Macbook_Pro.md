@@ -13,12 +13,14 @@ sudo sysctl iogpu.wired_limit_mb=28000 #leave 4 GB for system
 brew install python
 # cmake (to build code)
 brew install cmake
+# grep is out of date or not quite correct
+brew install grep
 # Hugging face cli
 curl -LsSf https://hf.co/cli/install.sh | bash
 
 ROOT_DIR=~/Documents/code/llm_tools
 mkdir -p ${ROOT_DIR}
-
+cd ${ROOT_DIR}
 #latest release of llama.cpp (official repo)
 LLAMA_TAG=$(curl -s https://api.github.com/repos/ggml-org/llama.cpp/releases/latest | grep -Po '"tag_name": "\K[^"]+')
 echo $LLAMA_TAG
