@@ -10,11 +10,13 @@ sudo sysctl iogpu.wired_limit_mb=28000 #leave 4 GB for system
 2. Basic command-line tools and llama.cpp (official)
 ```
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-brew install python
+brew install python -y
+echo 'export PATH="/opt/homebrew/opt/python@3.14/libexec/bin:$PATH"' >> ~/.zshrc
+source ~/.zshrc
 # cmake (to build code)
-brew install cmake
+brew install cmake -y
 # grep is out of date or not quite correct
-brew install grep
+brew install grep -y
 PATH="/opt/homebrew/opt/grep/libexec/gnubin:$PATH"
 # Hugging face cli
 curl -LsSf https://hf.co/cli/install.sh | bash
@@ -30,7 +32,8 @@ curl -s https://api.github.com/repos/ggml-org/llama.cpp/releases/latest | \
   cut -d '"' -f 4 | \
   xargs curl -L -O
 tar -xzf llama-${LLAMA_TAG}-bin-macos-*.tar.gz
-
+echo 'export PATH="/Users/csteele/.local/bin:$PATH"' >> ~/.zshrc
+source ~/.zshrc
 ln -s ${ROOT_DIR}/llama-${LLAMA_TAG}/llama* ~/.local/bin/.
 
 ```
@@ -42,7 +45,7 @@ CHAT_TEMPLATE_DIR=${ROOT_DIR}/chat_templates
 mkdir -p ${CHAT_TEMPLATE_DIR}
 HF_TEMPLATE_LOC="froggeric/Qwen-Fixed-Chat-Templates"
 TEMPLATE_TAG=${HF_TEMPLATE_LOC////-}
-hf download ${HF_TEMPLATE_LOC} chat_template.jinja --local-dir ${TEMPLATE_DIR}/${TEMPLATE_TAG}_chat_template.jinja
+hf download ${HF_TEMPLATE_LOC} chat_template.jinja --local-dir ${CHAT_TEMPLATE_DIR}/${TEMPLATE_TAG}_chat_template.jinja
 
 ```
 
@@ -52,7 +55,7 @@ MODEL_DIR=${ROOT_DIR}/models
 mkdir -p ${MODEL_DIR}
 
 HF_PROVIDER_MODEL_TAG=AtomicChat/Qwen3.6-35B-A3B-UDT-MTP-GGUF
-GGUF_TAG=Qwen3.6-35B-A3B-UDT-Q6_K_XL_MTP.gguf #smaller model to fit in mem
+GGUF_TAG=Qwen3.6-35B-A3B-UDT-Q4_K_XL_MTP.gguf #smaller model to fit in mem
 mkdir -p ${MODEL_DIR}/${HF_PROVIDER_MODEL_TAG}
 
 hf download ${HF_PROVIDER_MODEL_TAG} ${GGUF_TAG} --local-dir ${MODEL_DIR}/${HF_PROVIDER_MODEL_TAG}
@@ -60,6 +63,7 @@ hf download ${HF_PROVIDER_MODEL_TAG} ${GGUF_TAG} --local-dir ${MODEL_DIR}/${HF_P
 
 5. AtomicChat llama.cpp version
 ```
+ROOT_DIR=~/Documents/code/llm_tools
 cd ${ROOT_DIR}
 git clone https://github.com/AtomicBot-ai/atomic-llama-cpp-turboquant.git
 cd atomic-llama-cpp-turboquant
