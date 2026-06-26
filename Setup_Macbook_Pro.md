@@ -30,6 +30,7 @@ curl -s https://api.github.com/repos/ggml-org/llama.cpp/releases/latest | \
   cut -d '"' -f 4 | \
   xargs curl -L -O
 tar -xzf llama-${LLAMA_TAG}-bin-macos-*.tar.gz
+
 ln -s ${ROOT_DIR}/llama-${LLAMA_TAG}/llama* ~/.local/bin/.
 
 ```
