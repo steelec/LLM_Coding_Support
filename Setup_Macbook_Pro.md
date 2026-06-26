@@ -4,7 +4,7 @@
 0. Metal setup
 Set dedicated GPU memory (assuming 32GB RAM)
 ```
-sysctl iogpu.wired_limit_mb=28 #leave 4 GB for system
+sudo sysctl iogpu.wired_limit_mb=28000 #leave 4 GB for system
 ```
 
 2. Basic command-line tools and llama.cpp (official)
