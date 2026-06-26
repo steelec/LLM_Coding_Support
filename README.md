@@ -1,17 +1,19 @@
 # Learnings
 - Dense model (27B) almost always better for complex coding
 - 35B 3B MOE is v. fast and pretty good overall, but maybe not as good for complex tasks
-- AtomicChat is quite stable and works well, implementing it with CODER COMPAT MTP may be a big win
+  - potentially most useful for rapid iteration, followed by confirmation with the dense model
+- AtomicChat is quite stable and works well,
+  - implementing it with CODER COMPAT MTP may be a big win, but testing reveals that it still slows down rapidly
 
 # Running todo
 2. Test new jinja template on CODER COMPAT MTP, hoping it keeps the speed while correcting the looping. Performance should be appx equal.
-   - this is, so far, very good w/ the atomicchat testing (UDT MTP) but not tested otherwise
+   - [x] this is, so far, very good w/ the atomicchat testing (UDT MTP) but not tested otherwise
 4. Test AtomicChat build, which is more recently updated than the Tom one you are currently using
    - MoE versions may now work better with jinja template? if so then this could be a speedier option.
-   - DONE: seems smart, not yet optimized (increase b / ub)
+   - [x] DONE: seems smart, not yet optimized (increase b / ub) 
 5. Try `AtomicChat/Qwen3.6-35B-A3B-UDT-MTP-GGUF`
    - this branch does not work quite as advertised, no specification of -md necessary for this here
-   - A3B is v. fast (40-50 tok/s), quality not extensively tested but expected to be lower based on others experience - good for simple coding but may break down with more complex tasks
+   - [x] A3B is v. fast (40-50 tok/s), quality not extensively tested but expected to be lower based on others experience - good for simple coding but may break down with more complex tasks
    - web chat interface has a bug (does not allow scrolling)
    - --spec-draft-p-min 0.80  does not seem to work so set --draft-p-min 0.80 (older flag)
      - this ensures that low probability token drafts are not considered and can speed us up!
@@ -19,8 +21,10 @@
    - this did not work as of Jun 25, 2026. Model loads, but first prompt leads to crash
    - after much testing of params, leave for the moment
 5. Try `/Users/${USER}/.lmstudio/models/unsloth/Qwen-AgentWorld-35B-A3B-GGUF/Qwen-AgentWorld-35B-A3B-UD-Q8_K_XL.gguf`
-6. implement `headroom` around opencode harness, now that it can be used to wrap
+   - downloaded, not tested
+7. implement `headroom` around opencode harness, now that it can be used to wrap
    - (https://github.com/headroomlabs-ai/headroom/pull/1105)
+   - not yet in pip
 
 ```
 /Users/${USER}/Documents/code/atomic-llama-cpp-turboquant/build/bin/llama-server \
@@ -103,6 +107,7 @@ https://github.com/ggml-org/llama.cpp/releases
 ## Chat template(s)
 Useful to reduce looping, which you saw a lot of in the Qwen 3.6 variants (not in the original dense model). Can also reduce token usage and improve agentic flow, apparently
 ## froggeric
+Excellent chat template that seems to smooth out Qwen usage, definitely use this or something like it
 - https://huggingface.co/froggeric/Qwen-Fixed-Chat-Templates/blob/main/chat_template.jinja
 - `hf download froggeric/Qwen-Fixed-Chat-Templates chat_template.jinja --local-dir ~/Documents/code/.`
 
@@ -274,11 +279,14 @@ alternative (current testing):
   --chat-template-file /Users/${USER}/Documents/code/chat_template.jinja \
   --host 0.0.0.0 \
   --port 8080 \
+  -ctxcp 48 \
+  -cms 2048 \
   --metrics --mlock
 ```
 
 ### QwenOpus 3.6 CODER COMPAT MTP (JackRong)
 - supposed to fix looping, but does not seem to entirely
+- use of new chat template seems to help, but not extensively tested
 - `hf download Jackrong/Qwopus3.6-27B-Coder-Compat-MTP-GGUF Qwopus3.6-27B-Coder-Compat-MTP-Q8_0.gguf --local-dir .`
 ```
 llama-server --model /Users/${USER}/.lmstudio/models/Jackrong/Qwopus3.6-27B-Coder-COMPAT-MTP-GGUF/Qwopus3.6-27B-Coder-Compat-MTP-Q8_0.gguf \
