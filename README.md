@@ -253,6 +253,29 @@ The combination of a UDT file and NextN just allows you to squeeze your context 
   --cache-reuse 256 \
   --port 8080
 ```
+alternative (current testing):
+```
+/Users/${USER}/Documents/code/atomic-llama-cpp-turboquant/build/bin/llama-server \
+  -m /Users/${USER}/.lmstudio/models/Jackrong/Qwopus3.6-27B-Coder-Compat-MTP-GGUF/Qwopus3.6-27B-Coder-Compat-MTP-Q8_0.gguf \
+  --ctx-size 262144 \
+  -b 2048 \
+  -ub 2048 \
+  -ngl 999 \
+  -fa on \
+  --spec-type draft-mtp \
+  --spec-draft-n-max 2 \
+  --draft-p-min 0.80 \
+  --cache-type-k q8_0 \
+  --cache-type-v turbo3 \
+  --cache-type-k-draft q8_0 \
+  --cache-type-v-draft turbo3 \
+  --temperature 0.6 \
+  --jinja \
+  --chat-template-file /Users/${USER}/Documents/code/chat_template.jinja \
+  --host 0.0.0.0 \
+  --port 8080 \
+  --metrics --mlock
+```
 
 ### QwenOpus 3.6 CODER COMPAT MTP (JackRong)
 - supposed to fix looping, but does not seem to entirely
