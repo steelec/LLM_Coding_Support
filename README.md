@@ -4,6 +4,7 @@
   - potentially most useful for rapid iteration, followed by confirmation with the dense model
 - AtomicChat is quite stable and works well,
   - implementing it with CODER COMPAT MTP may be a big win, but testing reveals that it still slows down rapidly
+- Jackrong's CODER COMPAT MTP still runs into looping issues even with new jinja template, currently not using
 
 # Running todo
 2. Test new jinja template on CODER COMPAT MTP, hoping it keeps the speed while correcting the looping. Performance should be appx equal.
@@ -262,7 +263,7 @@ The combination of a UDT file and NextN just allows you to squeeze your context 
 alternative (current testing):
 ```
 /Users/${USER}/Documents/code/atomic-llama-cpp-turboquant/build/bin/llama-server \
-  -m /Users/${USER}/.lmstudio/models/Jackrong/Qwopus3.6-27B-Coder-Compat-MTP-GGUF/Qwopus3.6-27B-Coder-Compat-MTP-Q8_0.gguf \
+  -m /Users/${USER}/.lmstudio/models/AtomicChat/Qwen3.6-27B-UDT-MTP-GGUF/Qwen3.6-27B-UDT-Q8_K_XL_MTP.gguf \
   --ctx-size 262144 \
   -b 2048 \
   -ub 2048 \
