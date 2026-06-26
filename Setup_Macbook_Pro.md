@@ -15,6 +15,7 @@ brew install python
 brew install cmake
 # grep is out of date or not quite correct
 brew install grep
+PATH="/opt/homebrew/opt/grep/libexec/gnubin:$PATH"
 # Hugging face cli
 curl -LsSf https://hf.co/cli/install.sh | bash
 
