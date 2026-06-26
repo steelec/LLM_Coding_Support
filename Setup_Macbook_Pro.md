@@ -48,7 +48,7 @@ MODEL_DIR=${ROOT_DIR}/models
 mkdir -p ${MODEL_DIR}
 
 HF_PROVIDER_MODEL_TAG=AtomicChat/Qwen3.6-35B-A3B-UDT-MTP-GGUF
-GGUF_TAG=Qwen3.6-35B-A3B-UDT-Q8_K_XL_MTP.gguf
+GGUF_TAG=Qwen3.6-35B-A3B-UDT-Q6_K_XL_MTP.gguf #smaller model to fit in mem
 mkdir -p ${MODEL_DIR}/${HF_PROVIDER_MODEL_TAG}
 
 hf download ${HF_PROVIDER_MODEL_TAG} ${GGUF_TAG} --local-dir ${MODEL_DIR}/${HF_PROVIDER_MODEL_TAG}
