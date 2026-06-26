@@ -153,6 +153,7 @@ cmake --build build -j
 ### Qwen 3.7 27B dense
 - reliable, but heavy and slow so we use turboquant
 - b/c of this, we can fit the full context in mem!
+- should try adding   `-ctxcp 48 -cms 2048 \` to force more cache reuse, (if it invalidates cache?)
 ```
 /Users/${USER}/Documents/code/llama-cpp-turboquant/build/bin/llama-server \
   --model /Users/${USER}/.lmstudio/models/Jackrong/Qwen3.6-27B-GGUF/Qwen3.6-27B-Q8_0.gguf \
