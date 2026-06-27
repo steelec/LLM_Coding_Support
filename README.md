@@ -2,8 +2,12 @@
 - Dense model (27B) almost always better for complex coding
 - 35B 3B MOE is v. fast and pretty good overall, but maybe not as good for complex tasks
   - potentially most useful for rapid iteration, followed by confirmation with the dense model
-- AtomicChat is quite stable and works well,
+- AtomicChat is quite stable and works well, but hallucinates flags (`nextn` does not exist)
   - implementing it with CODER COMPAT MTP may be a big win, but testing reveals that it still slows down rapidly
+    - tested and still seems to stop or loop
+  - works, but is it trustworthy? it seems like it is 2ndary to their sales?
+- Beellama looks great, but has not allowed me to run anything without crashing
+  - keep an eye on it...?
 - Jackrong's CODER COMPAT MTP still runs into looping issues even with new jinja template, currently not using
 
 # Running todo
@@ -173,9 +177,40 @@ cmake --build build -j
   --port 8080
 ```
 
-### Qwenopus 3.6 UDT MTP 
+### Qwenopus 3.6 UDT MTP With Turboquant
 - if this does not work look at AtomicChat, this is more up-to-date it seems (but the improvements in tok/s seem not so great)
+```
+git clone https://github.com/TheTom/llama-cpp-turboquant
+cd llama-cpp-turboquant
+cmake --build build --clean-first
+cmake -B build -DGGML_METAL=ON -DGGML_METAL_EMBED_LIBRARY=ON -DCMAKE_BUILD_TYPE=Release
+cmake --build build --config Release -j
+```
 
+```
+~/Documents/code/llama-cpp-turboquant/build/bin/llama-server --model /Users/${USER}/.lmstudio/models/Jackrong/Qwopus3.6-27B-Coder-COMPAT-MTP-GGUF/Qwopus3.6-27B-Coder-Compat-MTP-Q8_0.gguf \
+  -c 262144 \
+  -b 2048 \
+  -ub 2048 \
+  -ngl 999 \
+  --temp 0.9 \
+  --top-p 0.90 \
+  --top-k 20 \
+  --min-p 0.0 \
+  --presence-penalty 0.0 \
+  --repeat-penalty 1.0 \
+  --chat-template-file /Users/${USER}/Documents/code/chat_template.jinja \
+  --spec-draft-n-max 3 \
+  --jinja \
+  --cache-type-k q8_0 \
+  --cache-type-v turbo4 \
+  --cache-prompt \
+  --host 0.0.0.0 \
+  --port 8080 \
+  -fa on \
+  -np 1 \
+  --metrics
+```
 ### AtomicChat with turboquant
 Trying to get the best of all worlds, as dense turboquant gets bogged down w/ large context (2 tok/s)
 - this repo is in a bad state, referencing a decoding type (nextn) that does not exist
