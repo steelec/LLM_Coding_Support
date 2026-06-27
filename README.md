@@ -173,9 +173,12 @@ cmake --build build -j
   --port 8080
 ```
 
-### Qwenopus 3.6 UDT MTP (AtomicChat) with turboquant
-Trying to get the best of all worlds, as dense turboquant gets bogged down w/ large context (2 tok/s)
+### Qwenopus 3.6 UDT MTP 
 - if this does not work look at AtomicChat, this is more up-to-date it seems (but the improvements in tok/s seem not so great)
+
+### AtomicChat with turboquant
+Trying to get the best of all worlds, as dense turboquant gets bogged down w/ large context (2 tok/s)
+- this repo is in a bad state, referencing a decoding type (nextn) that does not exist
   - https://huggingface.co/AtomicChat/Qwen3.6-27B-UDT-MTP-GGUF
   - https://github.com/AtomicBot-ai/atomic-llama-cpp-turboquant/tree/feature/turboquant-kv-cache
 - Setup:
@@ -183,9 +186,10 @@ Trying to get the best of all worlds, as dense turboquant gets bogged down w/ la
 2. `cd ~/Documents/code/`
 3. Download, build, and compile the fork (for macOS metal)
 ```
-https://github.com/AtomicBot-ai/atomic-llama-cpp-turboquant.git`
+git clone https://github.com/AtomicBot-ai/atomic-llama-cpp-turboquant.git
 cd atomic-llama-cpp-turboquant
 git checkout feature/turboquant-kv-cache
+cmake --build build --clean-first
 cmake -B build -DGGML_METAL=ON -DGGML_METAL_EMBED_LIBRARY=ON -DCMAKE_BUILD_TYPE=Release
 cmake --build build --config Release -j
 ```
