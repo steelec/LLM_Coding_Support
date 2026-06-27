@@ -8,6 +8,10 @@
   - works, but is it trustworthy? it seems like it is 2ndary to their sales?
 - Beellama looks great, but has not allowed me to run anything without crashing
   - keep an eye on it...?
+  - v0.3.2 seems to mostly work, but I have very poor acceptance (max .17) with the current setup, could be optimized...
+- Interesting approach for running these on limited hardware
+  - definitely some takeaways for you: https://www.youtube.com/watch?v=8F_5pdcD3HY (--> speculative decoding does not improve in MOE models, makes it worse)
+  - Dflash here, works only on v. specific conditions: https://www.youtube.com/watch?v=9vY4-Z-tkHs (--> works in specific conditions, if you can fit in VRAM and if you are coding)
 - Jackrong's CODER COMPAT MTP still runs into looping issues even with new jinja template, currently not using
 
 # Running todo
@@ -153,6 +157,33 @@ cmake --build build -j
   --no-mmap --mlock \
   --reasoning on \
   --temp 0.6 --top-k 20 --top-p 1.0 --min-p 0.0 --host 0.0.0.0
+```
+
+#### Updated beellama Dflash
+Switched to in-process v0.3.2 version of git code to be able to run on Mac, slight modifications to call
+- note that in mac this is currently necessary and slows things down: `dflash: GPU cross ring unavailable; using CPU hidden capture`
+- with this approach below, draft acceptance is VERY low (<20%)
+- 
+```
+/Users/${USER}/Documents/code/beellama.cpp/build/bin/llama-server \                                                                                      
+  --model /Users/${USER}/.lmstudio/models/unsloth/Qwen3.6-27B-GGUF/Qwen3.6-27B-Q8_0.gguf \
+  --model-draft /Users/${USER}/.lmstudio/models/Anbeeld/Qwen3.6-27B-DFlash-GGUF/Qwen3.6-27B-DFlash-Q4_K_M.gguf \
+  --spec-type dflash \
+  --spec-dflash-cross-ctx 1024 \
+  --port 8080 \
+  -np 1 \
+  --kv-unified \
+  -ngl all \
+  --spec-draft-ngl all \
+  -b 2048 -ub 512 \
+  --ctx-size 102400 \
+  --cache-type-k q4_1 --cache-type-v q4_1 \
+  --flash-attn on \
+  --jinja \          
+  --chat-template-file /Users/${USER}/Documents/code/chat_template.jinja \          
+  --no-mmap --mlock \
+  --reasoning on \
+  --temp 0.6 --top-k 20 --top-p 1.0 --min-p 0.0 --host 0.0.0.0 --spec-draft-ngl all
 ```
 
 ### Qwen 3.7 27B dense
