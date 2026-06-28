@@ -1,4 +1,7 @@
 # Learnings
+- k / v cache tradeoffs
+  - "v is everything" - there is a paper for this, apparently showing that we should always prioritize v
+  - the key (k) puts is in the correct or not location, but either way if v (value) is wrong we will be wrong 
 - Dense model (27B) almost always better for complex coding
 - 35B 3B MOE is v. fast and pretty good overall, but maybe not as good for complex tasks
   - potentially most useful for rapid iteration, followed by confirmation with the dense model
