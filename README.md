@@ -9,6 +9,8 @@
 - Beellama looks great, but has not allowed me to run anything without crashing
   - keep an eye on it...?
   - v0.3.2 seems to mostly work, but I have very poor acceptance (max .17) with the current setup, could be optimized...
+  - but still buggy and cannot get acceptance up --> **WAIT** until this is within the main llama.cpp repo
+    - not ready for MAC metal
 - Interesting approach for running these on limited hardware
   - definitely some takeaways for you: https://www.youtube.com/watch?v=8F_5pdcD3HY (--> speculative decoding does not improve in MOE models, makes it worse)
   - Dflash here, works only on v. specific conditions: https://www.youtube.com/watch?v=9vY4-Z-tkHs (--> works in specific conditions, if you can fit in VRAM and if you are coding)
@@ -58,6 +60,47 @@
   --port 8080
 ```
 
+Beellama version
+```
+/Users/${USER}/Documents/code/beellama.cpp/build/bin/llama-server \
+  --model /Users/${USER}/.lmstudio/models/unsloth/Qwen3.6-35B-A3B-GGUF/Qwen3.6-35B-A3B-Q8_0.gguf \
+  --model-draft /Users/${USER}/.lmstudio/models/Anbeeld/Qwen3.6-35B-A3B-DFlash-GGUF/qwen36-35b-a3b-dflash-Q8_0.gguf \
+  --spec-type dflash \
+  --spec-dflash-cross-ctx 1024 \
+  --port 8080 \
+  -np 1 \
+  --kv-unified \
+  -ngl all \
+  --spec-draft-ngl all \
+  -b 2048 -ub 512 \
+  --ctx-size 102400 \
+  --cache-type-k q4_1 --cache-type-v q4_1 \
+  --flash-attn on \
+  --jinja \
+  --chat-template-file /Users/${USER}/Documents/code/chat_template.jinja \
+  --no-mmap --mlock \
+  --reasoning on \
+  --temp 0.6 --top-k 20 --top-p 1.0 --min-p 0.0 --host 0.0.0.0 
+```
+llama.cpp version of A3B
+```
+llama-server \
+  --model /Users/${USER}/.lmstudio/models/unsloth/Qwen3.6-35B-A3B-GGUF/Qwen3.6-35B-A3B-Q8_0.gguf \
+  --port 8080 \
+  -np 1 \
+  --kv-unified \
+  -ngl all \
+  --spec-draft-ngl all \
+  -b 2048 -ub 512 \
+  --ctx-size 102400 \
+  --cache-type-k q4_1 --cache-type-v q4_1 \
+  --flash-attn on \
+  --jinja \
+  --chat-template-file /Users/${USER}/Documents/code/chat_template.jinja \
+  --no-mmap --mlock \
+  --reasoning on \
+  --temp 0.6 --top-k 20 --top-p 1.0 --min-p 0.0 --host 0.0.0.0 -ctxcp 48 -cms 2048 --cache-reuse 256
+```
 # Enhanced local model setup for llama (w/ guardrails if possible?)
 
 ## Headroom
