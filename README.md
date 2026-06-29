@@ -96,7 +96,7 @@ llama-server \
   --spec-draft-ngl all \
   -b 2048 -ub 512 \
   --ctx-size 102400 \
-  --cache-type-k q4_1 --cache-type-v q4_1 \
+  --cache-type-k q5_1 --cache-type-v q8_0 \
   --flash-attn on \
   --jinja \
   --chat-template-file /Users/${USER}/Documents/code/chat_template.jinja \
