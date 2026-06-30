@@ -205,6 +205,32 @@ cmake --build build -j
   --temp 0.6 --top-k 20 --top-p 1.0 --min-p 0.0 --host 0.0.0.0
 ```
 
+#### 27B MTP
+- https://unsloth.ai/docs/models/qwen3.6#mtp-guide#thinking-enable-disable--preserve-thinking
+```
+llama-server \
+  --model /Users/${USER}/.lmstudio/models/unsloth/Qwen3.6-27B-MTP-GGUF/Qwen3.6-27B-UD-Q8_K_XL.gguf \
+  --spec-type draft-mtp \
+  --port 8080 \
+  -np 1 \
+  -ngl all \
+  -b 2048 -ub 512 \
+  --ctx-size 102400 \
+  --cache-type-k q4_1 --cache-type-v q4_1 \
+  --flash-attn on \
+  --jinja \
+  --chat-template-file /Users/${USER}/Documents/code/chat_template.jinja \
+  --no-mmap --mlock \
+  --reasoning on \
+  --temp 0.6 \
+  --top-k 20 \
+  --top-p 0.95 \
+  --min-p 0.0 \
+  --host 0.0.0.0 \
+  --spec-draft-n-max 2 \
+  --metrics
+```
+
 #### Updated beellama Dflash
 Switched to in-process v0.3.2 version of git code to be able to run on Mac, slight modifications to call
 - note that in mac this is currently necessary and slows things down: `dflash: GPU cross ring unavailable; using CPU hidden capture`
