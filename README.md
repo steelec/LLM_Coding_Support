@@ -75,14 +75,15 @@
 - Jul 3, 2026 added --swa-full to try to increase prompt processing spd by retaining context
   - does not appear to have fixed the issue
   - now trying -ub 512 -b 512 --> which can apparently make block checking more reliable
-    - (this is not written in the command below)
+    - (now written in the command below)
+  - spec-draft-n-max 3 seems to be the best currently, tried 2,3,4
 ```
 /Users/${USER}/Documents/code/beellama.cpp/build/bin/llama-server \
   --model /Users/${USER}/.lmstudio/models/unsloth/Qwen3.6-27B-MTP-GGUF/Qwen3.6-27B-UD-Q8_K_XL.gguf \
   --spec-type draft-mtp \
-  --spec-draft-n-max 2 \
+  --spec-draft-n-max 3 \
   -c 102400 \
-  -b 2048 \
+  -b 512 \
   -ub 512 \
   -ngl 999 \
   --temp 0.6 \
