@@ -73,6 +73,9 @@
 ### Beellama versions
 #### 27B [CURRENT FAVOURITE]
 - Jul 3, 2026 added --swa-full to try to increase prompt processing spd by retaining context
+  - does not appear to have fixed the issue
+  - now trying -ub 512 -b 512 --> which can apparently make block checking more reliable
+    - (this is not written in the command below)
 ```
 /Users/${USER}/Documents/code/beellama.cpp/build/bin/llama-server \
   --model /Users/${USER}/.lmstudio/models/unsloth/Qwen3.6-27B-MTP-GGUF/Qwen3.6-27B-UD-Q8_K_XL.gguf \
