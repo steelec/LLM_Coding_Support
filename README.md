@@ -1,4 +1,8 @@
+
+
 # Learnings
+- beelama with 27B MTP is the current favourite
+  - still potentuial issues with lost prompt context though
 - k / v cache tradeoffs
   - "v is everything" - there is a paper for this, apparently showing that we should always prioritize v
   - the key (k) puts is in the correct or not location, but either way if v (value) is wrong we will be wrong 
@@ -18,6 +22,9 @@
   - definitely some takeaways for you: https://www.youtube.com/watch?v=8F_5pdcD3HY (--> speculative decoding does not improve in MOE models, makes it worse)
   - Dflash here, works only on v. specific conditions: https://www.youtube.com/watch?v=9vY4-Z-tkHs (--> works in specific conditions, if you can fit in VRAM and if you are coding)
 - Jackrong's CODER COMPAT MTP still runs into looping issues even with new jinja template, currently not using
+- `headroom wrap` combined with the extensive jinja template from `froggeric` and the unsloth MTP on standard llama.cpp seems to be a good workhorse with reasonable decode speed
+  - b/c this does not have turboquant we hit context limits though, so sometimes this just stops
+  - beelama
 
 # Running todo
 2. Test new jinja template on CODER COMPAT MTP, hoping it keeps the speed while correcting the looping. Performance should be appx equal.
@@ -63,7 +70,36 @@
   --port 8080
 ```
 
-Beellama version
+### Beellama versions
+#### 27B [CURRENT FAVOURITE]
+- Jul 3, 2026 added --swa-full to try to increase prompt processing spd by retaining context
+```
+/Users/${USER}/Documents/code/beellama.cpp/build/bin/llama-server \
+  --model /Users/${USER}/.lmstudio/models/unsloth/Qwen3.6-27B-MTP-GGUF/Qwen3.6-27B-UD-Q8_K_XL.gguf \
+  --spec-type draft-mtp \
+  --spec-draft-n-max 2 \
+  -c 102400 \
+  -b 2048 \
+  -ub 512 \
+  -ngl 999 \
+  --temp 0.6 \
+  --top-p 1.0 \
+  --top-k 20 \
+  --min-p 0.0 \
+  --chat-template-file /Users/${USER}/Documents/code/chat_template.jinja \
+  --jinja \
+  --cache-type-k q4_0 \
+  --cache-type-v q4_0 \
+  --cache-prompt \
+  --host 0.0.0.0 \
+  --port 8080 \
+  -fa on \
+  -np 1 \
+  --metrics \
+  -ctxcp 48 -cms 2048 --n-predict 16384 --swa-full
+```
+
+#### A3B
 ```
 /Users/${USER}/Documents/code/beellama.cpp/build/bin/llama-server \
   --model /Users/${USER}/.lmstudio/models/unsloth/Qwen3.6-35B-A3B-GGUF/Qwen3.6-35B-A3B-Q8_0.gguf \
@@ -85,6 +121,8 @@ Beellama version
   --reasoning on \
   --temp 0.6 --top-k 20 --top-p 1.0 --min-p 0.0 --host 0.0.0.0 
 ```
+
+### Llama.cpp
 llama.cpp version of A3B
 ```
 llama-server \
@@ -207,6 +245,25 @@ cmake --build build -j
 
 #### 27B MTP
 - https://unsloth.ai/docs/models/qwen3.6#mtp-guide#thinking-enable-disable--preserve-thinking
+- these seem to work very well, but sometimes just stop working potentially due to memory full - but it is not clear
+```
+llama-server \
+  --model /Users/${USER}/.lmstudio/models/unsloth/Qwen3.6-27B-MTP-GGUF/Qwen3.6-27B-UD-Q8_K_XL.gguf \
+  --spec-type draft-mtp \
+  --port 8080 \
+  -np 1 \
+  -ngl all \
+  -b 2048 -ub 512 \
+  --ctx-size  100000\
+  --cache-type-k q4_1 --cache-type-v q4_1 \
+  --flash-attn on \
+  --jinja \
+  --chat-template-file /Users/${USER}/Documents/code/chat_template.jinja \
+  --reasoning on \
+  --temp 0.6 --top-k 20 --top-p 0.95 --min-p 0.0 --host 0.0.0.0 --spec-draft-n-max 2 --metrics --n-predict 16384
+```
+
+- Another version
 ```
 llama-server \
   --model /Users/${USER}/.lmstudio/models/unsloth/Qwen3.6-27B-MTP-GGUF/Qwen3.6-27B-UD-Q8_K_XL.gguf \
