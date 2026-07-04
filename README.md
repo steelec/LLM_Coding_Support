@@ -1,4 +1,6 @@
-
+# Watching
+- dflash (beellama)
+- lucebox approach: https://github.com/Luce-Org/lucebox-hub
 
 # Learnings
 - beelama with 27B MTP is the current favourite
