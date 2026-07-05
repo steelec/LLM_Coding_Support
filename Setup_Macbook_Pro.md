@@ -60,7 +60,16 @@ mkdir -p ${MODEL_DIR}/${HF_PROVIDER_MODEL_TAG}
 
 hf download ${HF_PROVIDER_MODEL_TAG} ${GGUF_TAG} --local-dir ${MODEL_DIR}/${HF_PROVIDER_MODEL_TAG}
 ```
-
+5. Beellama llama.cpp version
+- Allows us access to both turboquant and speculative decoding
+```
+ROOT_DIR=~/Documents/code/llm_tools
+cd ${ROOT_DIR}
+git clone https://github.com/Anbeeld/beellama.cpp.git
+cd beellama.cpp
+cmake -B build -DGGML_METAL=ON -DGGML_METAL_EMBED_LIBRARY=ON -DCMAKE_BUILD_TYPE=Release
+cmake --build build --config Release -j
+```
 5. AtomicChat llama.cpp version
 ```
 ROOT_DIR=~/Documents/code/llm_tools
@@ -71,7 +80,34 @@ git checkout feature/turboquant-kv-cache
 cmake -B build -DGGML_METAL=ON -DGGML_METAL_EMBED_LIBRARY=ON -DCMAKE_BUILD_TYPE=Release
 cmake --build build --config Release -j
 ```
+6. Run model with Beellama
+```
+ROOT_DIR=~/Documents/code/llm_tools
+${ROOT_DIR}/beellama.cpp/build/bin/llama-server \
+  -m ${ROOT_DIR}/models/unsloth/Qwen3.6-35B-A3B-MTP-GGUF/Qwen3.6-35B-A3B-MTP-GGUF \
+  --spec-type draft-mtp \
+  --spec-draft-n-max 3 \
+  --top-p 0.95
+  --top-k 20
+  --presence-penalty 1.1
+  --repetition-penalty 1
+  -np 1
+  -c 131072 \
+  -b 2048 \
+  -ub 512 \
+  -ngl 999 \
+  -fa on \
+  --cache-type-k q8_0 \
+  --cache-type-v turbo3 \
+  --cache-type-k-draft q8_0 \
+  --cache-type-v-draft turbo3 \
+  --host 0.0.0.0 \
+  -ctxcp 48 \
+  -cms 2048 \
+  --cache-reuse 256 \
+  --port 8080
 
+```
 6. Run model with AtomicChat
 
 ```
