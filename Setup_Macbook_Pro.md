@@ -40,7 +40,8 @@ ln -s ${ROOT_DIR}/llama-${LLAMA_TAG}/llama* ~/.local/bin/.
 
 3. Chat template
 ```
-# ROOT_DIR=~/Documents/code/llm_tools
+
+ROOT_DIR=~/Documents/code/llm_tools
 CHAT_TEMPLATE_DIR=${ROOT_DIR}/chat_templates
 mkdir -p ${CHAT_TEMPLATE_DIR}
 HF_TEMPLATE_LOC="froggeric/Qwen-Fixed-Chat-Templates"
@@ -92,6 +93,7 @@ ${ROOT_DIR}/beellama.cpp/build/bin/llama-server \
   -m ${ROOT_DIR}/models/unsloth/Qwen3.6-35B-A3B-MTP-GGUF/Qwen3.6-35B-A3B-MTP-GGUF \
   --spec-type draft-mtp \
   --spec-draft-n-max 3 \
+  --temperature 0.6
   --top-p 0.95
   --top-k 20
   --presence-penalty 1.1
@@ -110,6 +112,9 @@ ${ROOT_DIR}/beellama.cpp/build/bin/llama-server \
   -ctxcp 48 \
   -cms 2048 \
   --cache-reuse 256 \
+  --cache-prompt
+  --chat-template-file CHAT_TEMPLATE_DIR=${ROOT_DIR}/chat_templates/froggeric-Qwen-Fixed-Chat-Templates_chat_template.jinja \
+  --jinja \
   --port 8080
 
 ```
