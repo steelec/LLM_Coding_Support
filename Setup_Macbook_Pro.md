@@ -95,9 +95,10 @@ ${ROOT_DIR}/beellama.cpp/build/bin/llama-server \
   --spec-draft-n-max 3 \
   --temperature 0.6
   --top-p 0.95
+  --min-p 0.0
   --top-k 20
-  --presence-penalty 1.1
-  --repetition-penalty 1
+  --presence-penalty 0.0
+  --repetition-penalty 1.1
   -np 1
   -c 131072 \
   -b 2048 \
