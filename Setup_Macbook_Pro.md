@@ -53,6 +53,8 @@ hf download ${HF_TEMPLATE_LOC} chat_template.jinja --local-dir ${CHAT_TEMPLATE_D
 Can improve small model output with nudges etc, providing much higher output quaulity at the cost of time
 - install uv
 - create venv, source it
+  - `uv venv --python 3.13`
+  - `source .venv/bin/activate`
 - `uv pip install forge-guardrails`
 - run it after starting model, point opencode at it
   - `forge-proxy --backend-url http://localhost:8080 --port 8081`
