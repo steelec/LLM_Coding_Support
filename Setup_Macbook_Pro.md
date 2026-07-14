@@ -49,7 +49,13 @@ TEMPLATE_TAG=${HF_TEMPLATE_LOC////-}
 hf download ${HF_TEMPLATE_LOC} chat_template.jinja --local-dir ${CHAT_TEMPLATE_DIR}/${TEMPLATE_TAG}_chat_template.jinja
 
 ```
-
+# Forge Guardrails
+Can improve small model output with nudges etc, providing much higher output quaulity at the cost of time
+- install uv
+- create venv, source it
+- `uv pip install forge-guardrails`
+- run it after starting model, point opencode at it
+  - `forge-proxy --backend-url http://localhost:8080 --port 8081`
 # Llama.cpp versions
 
 ## Beellama llama.cpp version
