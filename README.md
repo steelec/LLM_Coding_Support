@@ -125,7 +125,7 @@
   --chat-template-file /Users/${USER}/Documents/code/chat_template.jinja \
   --no-mmap --mlock \
   --reasoning on \
-  --temp 0.6 --top-k 20 --top-p 1.0 --min-p 0.0 --host 0.0.0.0 
+  --temp 0.6 --top-k 20 --top-p 1.0 --min-p 0.0 --host 0.0.0.0 --swa-full
 ```
 
 ### Llama.cpp
@@ -155,10 +155,18 @@ Used to compress prompts (+ more) @ the harness level
 - now wraps opencode harness: https://github.com/headroomlabs-ai/headroom/pull/1105
 - `pip install headroom-ai[all]`
 
-## To use forge-guardrails to improve local model peformance: https://github.com/antoinezambelli/forgehttps://github.com/steelec/LLM_Coding_Support/blob/main/README.md
-- can be setup in proxy mode to just point to current server (e.g., LMStudio)
-- or with the full llama.cpp backend setup (there are additional benefits to this)
-- --> NOT IMPLEMENTED
+## Forge Guardrails
+Use forge-guardrails to improve local model peformance: https://github.com/antoinezambelli/forgehttps://github.com/steelec/LLM_Coding_Support/blob/main/README.md
+
+Can improve small model output with nudges etc, providing much higher output quaulity at the cost of time
+- install uv
+  - did this in `~/Documents/code/tools/`
+- create venv, source it
+  - `uv venv --python 3.13`
+  - `source .venv/bin/activate`
+- `uv pip install forge-guardrails`
+- run it after starting model, point opencode at it
+  - `forge-proxy --backend-url http://localhost:8080 --port 8081`
 
 ## MAC-specific setup
 
