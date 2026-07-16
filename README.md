@@ -165,8 +165,8 @@ Can improve small model output with nudges etc, providing much higher output qua
   - `uv venv --python 3.13`
   - `source .venv/bin/activate`
 - `uv pip install forge-guardrails`
-- run it after starting model, point opencode at it
-  - `forge-proxy --backend-url http://localhost:8080 --port 8081`
+- run it after starting model, point opencode at it, needs to be bound to --host 0.0.0.0 to allow external access
+  - `forge-proxy --backend-url http://localhost:8080 --port 8081 --host 0.0.0.0`
 
 ## MAC-specific setup
 
